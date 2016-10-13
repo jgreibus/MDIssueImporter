@@ -2,7 +2,10 @@ package issue_tracker_integration;
 
 import com.nomagic.magicdraw.core.options.AbstractPropertyOptionsGroup;
 import com.nomagic.magicdraw.icons.IconsFactory;
-import com.nomagic.magicdraw.properties.*;
+import com.nomagic.magicdraw.properties.ChoiceProperty;
+import com.nomagic.magicdraw.properties.Property;
+import com.nomagic.magicdraw.properties.PropertyResourceProvider;
+import com.nomagic.magicdraw.properties.StringProperty;
 import resources.IntegrationEnvOptResources;
 
 import javax.swing.*;
@@ -89,12 +92,14 @@ public class IntegrationOptions extends AbstractPropertyOptionsGroup
     @Override
     public String getName()
     {
+
         return IntegrationEnvOptResources.getString(OPTION_GROUP_NAME);
     }
 
     @Override
     public javax.swing.Icon getGroupIcon()
     {
+
         return ICON;
     }
 }
