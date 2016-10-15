@@ -1,5 +1,8 @@
 package issue_tracker_integration;
 
+import com.nomagic.actions.ActionsCategory;
+import com.nomagic.actions.NMAction;
+import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
@@ -15,7 +18,10 @@ public class Main extends Plugin {
 
 	@Override
 	public void init() {
+
 		configureEnvironmentOptions();
+		ActionsConfiguratorsManager manager = ActionsConfiguratorsManager.getInstance();
+		manager.addMainMenuConfigurator(new MainMenuConfigurator(getMenuActions()));
 	}
 
 	@Override
@@ -28,8 +34,15 @@ public class Main extends Plugin {
 		return true;
 	}
 
+	private NMAction getMenuActions(){
+		ActionsCategory category = new ActionsCategory(null, "subMenu");
+		category.addAction(new SimpleAction(null, "SubAction1"));
+		category.addAction(new SimpleAction(null, "SubAction2"));
+		return category;
+	}
+
 	/**
-	 * Configures example environment options.
+	 * Configures environment options.
 	 */
 	private void configureEnvironmentOptions() {
 		Application application = Application.getInstance();
