@@ -221,7 +221,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/plugins/All Plugins/All Plugins.iml" filepath="$PROJECT_DIR$/plugins/All Plugins/All Plugins.iml" />
       <module fileurl="file://$PROJECT_DIR$/My Commandline/My Commandline.iml" filepath="$PROJECT_DIR$/My Commandline/My Commandline.iml" />
-      <module fileurl="file://$PROJECT_DIR$/plugins/My Plug-in 2/My Plug-in 2.iml" filepath="$PROJECT_DIR$/plugins/My Plug-in 2/My Plug-in 2.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/md_issue_tracker_integration/md_issue_tracker_integration.iml" filepath="$PROJECT_DIR$/plugins/md_issue_tracker_integration/md_issue_tracker_integration.iml" />
     </modules>
   </component>

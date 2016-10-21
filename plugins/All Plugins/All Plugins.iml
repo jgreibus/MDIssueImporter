@@ -6,6 +6,5 @@
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="md_issue_tracker_integration" exported="" />
-    <orderEntry type="module" module-name="My Plug-in 2" exported="" />
   </component>
 </module>
