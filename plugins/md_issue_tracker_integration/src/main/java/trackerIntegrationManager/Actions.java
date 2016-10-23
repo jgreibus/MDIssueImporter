@@ -1,4 +1,4 @@
-package issue_tracker_integration;
+package trackerIntegrationManager;
 
 import com.nomagic.magicdraw.actions.MDAction;
 import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
@@ -6,9 +6,8 @@ import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-/**
- * Created by justinasg on 2016-07-17.
- */
+import trackerManager.RedmineIssueManager;
+
 class SimpleAction extends MDAction
 {
     public SimpleAction(String id, String name)
@@ -21,5 +20,6 @@ class SimpleAction extends MDAction
     public void actionPerformed(ActionEvent e)
     {
         JOptionPane.showMessageDialog(MDDialogParentProvider.getProvider().getDialogParent(), "This is:" + getName());
+        RedmineIssueManager.GetIssues();
     }
 }

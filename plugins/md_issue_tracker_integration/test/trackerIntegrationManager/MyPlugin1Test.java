@@ -1,4 +1,4 @@
-package issue_tracker_integration;
+package trackerIntegrationManager;
 
 import com.nomagic.magicdraw.tests.MagicDrawTestCase;
 

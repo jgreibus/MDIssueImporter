@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
-        id="issue_tracker_integration"
+        id="trackerIntegrationManager"
         name="MagicDraw and Issue Tracker intgeration plugin"
         version="1.0"
         provider-name="justasg.com"
-        class="issue_tracker_integration.Main">
+        class="trackerIntegrationManager.Main">
 
     <requires>
         <api version="1.2"/>
     </requires>
 
     <runtime>
-        <library name="issue_tracker_integration.jar"/>
+        <library name="trackerIntegrationManager.jar"/>
     </runtime>
 </plugin>

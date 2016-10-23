@@ -1,6 +1,7 @@
-package issue_tracker_integration;
+package trackerIntegrationManager;
 
 import com.nomagic.magicdraw.core.options.AbstractPropertyOptionsGroup;
+import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.icons.IconsFactory;
 import com.nomagic.magicdraw.properties.ChoiceProperty;
 import com.nomagic.magicdraw.properties.Property;
@@ -32,6 +33,8 @@ public class IntegrationOptions extends AbstractPropertyOptionsGroup
     public static final String USER_API_KEY_ID = "USER_API_KEY_ID";
     public static final String TRACKER_URL_ID = "TRACKER_URL_ID";
 
+    public final String userAPIKey = getUserAPIKeyValue();
+
     public static final PropertyResourceProvider PROPERTY_RESOURCE_PROVIDER = new PropertyResourceProvider()
     {
         @Override
@@ -41,9 +44,7 @@ public class IntegrationOptions extends AbstractPropertyOptionsGroup
         }
     };
 
-    /**
-     * Constructs this options group.
-     */
+
     public IntegrationOptions()
     {
         super(ID);
@@ -70,6 +71,12 @@ public class IntegrationOptions extends AbstractPropertyOptionsGroup
     public String getTrackerSelectionPropertyValue()
     {
         Property p = getProperty(INTEGRATION_ID);
+        return (String) p.getValue();
+    }
+
+    public String getUserAPIKeyValue() {
+        Property p = getProperty(USER_API_KEY_ID);
+        // System.out.println("Test"+p.getValue().toString());
         return (String) p.getValue();
     }
 
