@@ -18,7 +18,7 @@ public class RedmineIssueManager {
         //String apiAccessKey = "15f2ae24367ff01363f473221a747e763c559192";
         IntegrationOptions intOpt = new IntegrationOptions();
         final String uri = "https://redmine.softneta.com";
-        final String apiAccessKey = intOpt.userAPIKey;
+        final String apiAccessKey = ((IntegrationOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationOptions.ID)).getUserAPIKeyValue();
         String projectKey = "151";
         Integer queryId = null; // any
 
