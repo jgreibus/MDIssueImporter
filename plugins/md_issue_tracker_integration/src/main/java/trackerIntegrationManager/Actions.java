@@ -3,8 +3,6 @@ package trackerIntegrationManager;
 import com.nomagic.magicdraw.actions.MDAction;
 import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
 
-import elementSelectionManager.elementSelectionManager;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
@@ -22,7 +20,6 @@ class SimpleAction extends MDAction
     public void actionPerformed(ActionEvent e)
     {
         JOptionPane.showMessageDialog(MDDialogParentProvider.getProvider().getDialogParent(), "This is:" + getName());
-        //RedmineIssueManager.GetIssues();
-        elementSelectionManager.createElementSelectionDialog();
+        RedmineIssueManager.GetIssues();
     }
 }
