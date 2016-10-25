@@ -5,13 +5,13 @@ import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
 
 import com.nomagic.magicdraw.ui.dialogs.selection.ElementSelectionDlg;
 import com.nomagic.magicdraw.uml.BaseElement;
-import elementSelectionManager.elementSelectionManager;
+import com.nomagic.magicdraw.uml.ClassTypes;
+import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallBehaviorAction;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
-
-import trackerManager.RedmineIssueManager;
 
 import static elementSelectionManager.elementSelectionManager.createElementSelectionDialog;
 
@@ -29,7 +29,9 @@ class SimpleAction extends MDAction
         JOptionPane.showMessageDialog(MDDialogParentProvider.getProvider().getDialogParent(), "This is:" + getName());
         //RedmineIssueManager.GetIssues();
         //elementSelectionManager.createElementSelectionDialog();
-        ElementSelectionDlg elementSelectionDlg = createElementSelectionDialog();
+        //List<Class> types = ClassTypes.getSubtypes(Property.class);
+        List<Class> types = ClassTypes.getSubtypes(CallBehaviorAction.class);
+        ElementSelectionDlg elementSelectionDlg = createElementSelectionDialog(types);
 
         elementSelectionDlg.setVisible(true);
 

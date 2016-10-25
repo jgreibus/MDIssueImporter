@@ -1,15 +1,7 @@
 package elementSelectionManager;
 
-import com.nomagic.actions.AMConfigurator;
-import com.nomagic.actions.ActionsManager;
-import com.nomagic.actions.NMAction;
-import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager;
-import com.nomagic.magicdraw.actions.ActionsGroups;
-import com.nomagic.magicdraw.actions.ActionsID;
-import com.nomagic.magicdraw.actions.MDAction;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
-import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
 import com.nomagic.magicdraw.ui.dialogs.SelectElementInfo;
 import com.nomagic.magicdraw.ui.dialogs.SelectElementTypes;
@@ -18,21 +10,19 @@ import com.nomagic.magicdraw.ui.dialogs.selection.ElementSelectionDlgFactory;
 import com.nomagic.magicdraw.ui.dialogs.selection.TypeFilter;
 import com.nomagic.magicdraw.ui.dialogs.selection.TypeFilterImpl;
 import com.nomagic.magicdraw.uml.BaseElement;
-import com.nomagic.magicdraw.uml.ClassTypes;
 import com.nomagic.magicdraw.uml.Finder;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class elementSelectionManager {
-    public static ElementSelectionDlg createElementSelectionDialog() {
+    public static ElementSelectionDlg createElementSelectionDialog(List types) {
         // Only properties and and their subtypes are offered to select.
-        List<Class> types = ClassTypes.getSubtypes(Property.class);
         SelectElementTypes selectElementTypes = new SelectElementTypes(types, types, null, types);
 
         // Available properties are filtered so that only the ones which start with 'p' are selected.
