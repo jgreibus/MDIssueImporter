@@ -26,7 +26,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="md_issue_tracker_integration" target="1.6" />
+      <module name="md_issue_tracker_integration" target="1.7" />
     </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="" />
@@ -220,7 +220,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/plugins/All Plugins/All Plugins.iml" filepath="$PROJECT_DIR$/plugins/All Plugins/All Plugins.iml" />
-      <module fileurl="file://$PROJECT_DIR$/My Commandline/My Commandline.iml" filepath="$PROJECT_DIR$/My Commandline/My Commandline.iml" />
       <module fileurl="file://$PROJECT_DIR$/plugins/md_issue_tracker_integration/md_issue_tracker_integration.iml" filepath="$PROJECT_DIR$/plugins/md_issue_tracker_integration/md_issue_tracker_integration.iml" />
     </modules>
   </component>
