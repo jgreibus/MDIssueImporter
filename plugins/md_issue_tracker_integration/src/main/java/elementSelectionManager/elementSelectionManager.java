@@ -11,7 +11,7 @@ import com.nomagic.magicdraw.ui.dialogs.selection.TypeFilter;
 import com.nomagic.magicdraw.ui.dialogs.selection.TypeFilterImpl;
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.magicdraw.uml.Finder;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallBehaviorAction;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 
 import javax.annotation.Nonnull;
@@ -26,19 +26,19 @@ public class elementSelectionManager {
         SelectElementTypes selectElementTypes = new SelectElementTypes(types, types, null, types);
 
         // Available properties are filtered so that only the ones which start with 'p' are selected.
-        final Collection<Property> candidates = getSelectionCandidates("p");
+       // final Collection<Property> candidates = getSelectionCandidates("p");
 
         TypeFilter selectableFilter = new TypeFilterImpl(selectElementTypes.select) {
             @Override
             public boolean accept(@Nonnull BaseElement baseElement, boolean checkType) {
-                return super.accept(baseElement, checkType) && candidates.contains(baseElement);
+                return super.accept(baseElement, checkType);// && candidates.contains(baseElement);
             }
         };
 
         TypeFilter visibleFilter = new TypeFilterImpl(selectElementTypes.display) {
             @Override
             public boolean accept(@Nonnull BaseElement baseElement, boolean checkType) {
-                return super.accept(baseElement, checkType) && candidates.contains(baseElement);
+                return super.accept(baseElement, checkType);// && candidates.contains(baseElement);
             }
         };
 
@@ -47,38 +47,26 @@ public class elementSelectionManager {
 
         SelectElementInfo selectElementInfo = new SelectElementInfo(true, false, null, true);
         // Gets elements which are initially selected in the dialog.
-        List<Property> initialSelection = getInitialSelection(candidates);
+        List<CallBehaviorAction> initialSelection = getInitialSelection();
+        //List<Class> initialSelection = new Class[]{CallBehaviorAction.class};
         ElementSelectionDlgFactory.initMultiple(selectionDlg, selectElementInfo, visibleFilter, selectableFilter, selectElementTypes.usedAsTypes,
                 selectElementTypes.create, initialSelection);
 
         return selectionDlg;
     }
 
-    private static List<Property> getInitialSelection(Collection<Property> candidates) {
-        List<Property> initialSelection = new ArrayList<>();
-
-        for (Property property : candidates) {
-            if (property.getType() instanceof com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class) {
-                initialSelection.add(property);
-            }
-        }
-
-        return initialSelection;
-    }
-
-    private static Collection<Property> getSelectionCandidates(String start) {
-        final List<Property> properties = new ArrayList<>();
+    private static List<CallBehaviorAction> getInitialSelection() {
+        final List<CallBehaviorAction> actions = new ArrayList<>();
 
         final Project project = Application.getInstance().getProject();
-        if (project != null) {
-            final Collection<Property> candidates = Finder.byTypeRecursively().find(project, new Class[]{Property.class}, false);
-            for (Property property : candidates) {
-                if (property.getName().startsWith(start)) {
-                    properties.add(property);
+        if(project != null) {
+            final Collection<CallBehaviorAction> candidates = Finder.byTypeRecursively().find(project, new Class[]{CallBehaviorAction.class}, false);
+            for (CallBehaviorAction action : candidates) {
+                if (action.getName().startsWith("a")) {
+                    actions.add(action);
                 }
             }
         }
-        return properties;
+        return actions;
     }
-
 }
