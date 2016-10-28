@@ -5,6 +5,8 @@ import com.nomagic.actions.ActionsCategory;
 import com.nomagic.actions.ActionsManager;
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
+import com.nomagic.magicdraw.core.Application;
+import com.nomagic.magicdraw.core.Project;
 
 /**
  * Created by justinasg on 2016-08-21.
@@ -33,24 +35,23 @@ public class MainMenuConfigurator implements AMConfigurator
          *  Methods adds action to given manager Examples category.
          */
         @Override
-        public void configure(ActionsManager manager)
-        {
+        public void configure(ActionsManager manager) {
             // searching for Examples action category
+
             ActionsCategory category = (ActionsCategory) manager.getActionFor(MENU);
 
-            if( category == null )
-            {
+            if (category == null) {
                 // creating new category
                 category = new MDActionsCategory(MENU, MENU);
                 category.setNested(true);
                 manager.addCategory(category);
             }
             category.addAction(action);
-        }
+            }
+
         @Override
         public int getPriority()
         {
             return AMConfigurator.MEDIUM_PRIORITY;
         }
-
     }

@@ -76,7 +76,6 @@ public class IntegrationOptions extends AbstractPropertyOptionsGroup
 
     public String getUserAPIKeyValue() {
         Property p = getProperty(USER_API_KEY_ID);
-        // System.out.println("Test"+p.getValue().toString());
         return (String) p.getValue();
     }
 
