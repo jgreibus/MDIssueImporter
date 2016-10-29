@@ -10,7 +10,6 @@ import com.nomagic.magicdraw.core.Project;
 
 public class MainMenuConfigurator implements AMConfigurator
     {
-
         String PARENT_MENU ="TOOLS";
         String MENU = "Tracker Integration";
 
@@ -27,13 +26,13 @@ public class MainMenuConfigurator implements AMConfigurator
 
             ActionsCategory category = (ActionsCategory) manager.getCategory(PARENT_MENU);
 
-            if (category == null) {
+            if (category != null) {
                 category = new MDActionsCategory(MENU, MENU);
                 category.setNested(true);
                 manager.addCategory(category);
             }
             category.addAction(action);
-            }
+        }
 
         @Override
         public int getPriority()
