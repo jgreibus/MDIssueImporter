@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class elementSelectionManager {
+public class ElementSelectionManager {
     public static ElementSelectionDlg createElementSelectionDialog(List types) {
 
         SelectElementTypes selectElementTypes = new SelectElementTypes(types, types, null, types);

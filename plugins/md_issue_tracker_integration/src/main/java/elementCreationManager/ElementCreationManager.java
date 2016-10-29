@@ -19,7 +19,7 @@ import java.util.Collection;
 import static com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper.addStereotype;
 
 
-public class elementCreationManager {
+public class ElementCreationManager {
 
     public static void createStereotypedClassElement(Element owner, String subject, String issue) {
 
@@ -34,7 +34,9 @@ public class elementCreationManager {
                     Class c = factory.createClassInstance();
                     ModelElementsManager.getInstance().addElement(c, owner);
                     try {
+                        c.setName(subject);
                         addStereotype(c, stereotype);
+                        StereotypesHelper.setStereotypePropertyValue(c, stereotype, "issue", issue);
                     } catch (java.lang.IllegalArgumentException e) {
                         System.out.println(e);
                     }

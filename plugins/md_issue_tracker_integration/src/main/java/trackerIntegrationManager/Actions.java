@@ -17,8 +17,7 @@ import trackerManager.RedmineIssueManager;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import static elementSelectionManager.elementSelectionManager.createElementSelectionDialog;
-import static elementCreationManager.elementCreationManager.createStereotypedClassElement;
+import static elementSelectionManager.ElementSelectionManager.createElementSelectionDialog;
 
 class ImportProblems extends MDAction
 {
@@ -32,7 +31,6 @@ class ImportProblems extends MDAction
     public void actionPerformed(ActionEvent e)
     {
         //JOptionPane.showMessageDialog(MDDialogParentProvider.getProvider().getDialogParent(), "This is:" + getName());
-        RedmineIssueManager.GetIssues();
         Project project = Application.getInstance().getProject();
         Profile profile = StereotypesHelper.getProfile(project, "UML_Standard_Profile");
         Stereotype stereotype = StereotypesHelper.getStereotype(project, "DiagramLegend", profile);
@@ -44,7 +42,7 @@ class ImportProblems extends MDAction
 
         if (elementSelectionDlg.isOkClicked()) {
             BaseElement selected = elementSelectionDlg.getSelectedElement();
-            createStereotypedClassElement((Element) selected, stereotype);
+            RedmineIssueManager.GetIssues((Element) selected);
         }
     }
 }
