@@ -1,4 +1,4 @@
-package trackerIntegrationManager;
+package trackerIntegrationManager.options;
 
 import com.nomagic.magicdraw.core.options.AbstractPropertyOptionsGroup;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
@@ -7,6 +7,7 @@ import com.nomagic.magicdraw.properties.ChoiceProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.PropertyResourceProvider;
 import com.nomagic.magicdraw.properties.StringProperty;
+import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import resources.IntegrationEnvOptResources;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class IntegrationOptions extends AbstractPropertyOptionsGroup
+public class IntegrationEnvironmentOptions extends AbstractPropertyOptionsGroup
 {
 
     public static final String ID = "options.integration";
@@ -32,6 +33,7 @@ public class IntegrationOptions extends AbstractPropertyOptionsGroup
 
     public static final String USER_API_KEY_ID = "USER_API_KEY_ID";
     public static final String TRACKER_URL_ID = "TRACKER_URL_ID";
+    // public static final Stereotype PROBLEM_STEREOTYPE = "STEREOTYPE_FOR_PROBLEM_ELEMENT";
 
     public final String userAPIKey = getUserAPIKeyValue();
 
@@ -45,7 +47,7 @@ public class IntegrationOptions extends AbstractPropertyOptionsGroup
     };
 
 
-    public IntegrationOptions()
+    public IntegrationEnvironmentOptions()
     {
         super(ID);
     }
@@ -74,11 +76,6 @@ public class IntegrationOptions extends AbstractPropertyOptionsGroup
         return (String) p.getValue();
     }
 
-    public String getUserAPIKeyValue() {
-        Property p = getProperty(USER_API_KEY_ID);
-        return (String) p.getValue();
-    }
-
     public void setUserApiKey(String value){
         StringProperty user_api_key_property = new StringProperty(USER_API_KEY_ID, value);
         user_api_key_property.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
@@ -87,12 +84,26 @@ public class IntegrationOptions extends AbstractPropertyOptionsGroup
         addProperty(user_api_key_property);
     }
 
+    public String getUserAPIKeyValue() {
+        Property p = getProperty(USER_API_KEY_ID);
+        return (String) p.getValue();
+    }
+
     public void setTrackerURL(String value){
         StringProperty tracker_URL_property = new StringProperty(TRACKER_URL_ID, value);
         tracker_URL_property.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
         tracker_URL_property.setGroup(INTEGRATION_OPTIONS_GROUP);
 
         addProperty(tracker_URL_property);
+    }
+
+    public String getTrackerUrlId() {
+        Property property = getProperty(TRACKER_URL_ID);
+        return (String) property.getValue();
+    }
+
+    public void setProblemStereotype(Stereotype e) {
+
     }
 
     @Override

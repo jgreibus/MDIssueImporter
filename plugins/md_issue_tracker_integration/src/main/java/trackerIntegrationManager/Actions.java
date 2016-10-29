@@ -18,7 +18,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import static elementSelectionManager.elementSelectionManager.createElementSelectionDialog;
-import static elementCreationManager.elementCreationManager.createStereotypedElement;
+import static elementCreationManager.elementCreationManager.createStereotypedClassElement;
 
 class ImportProblems extends MDAction
 {
@@ -44,7 +44,7 @@ class ImportProblems extends MDAction
 
         if (elementSelectionDlg.isOkClicked()) {
             BaseElement selected = elementSelectionDlg.getSelectedElement();
-            createStereotypedElement((Element) selected, stereotype);
+            createStereotypedClassElement((Element) selected, stereotype);
         }
     }
 }

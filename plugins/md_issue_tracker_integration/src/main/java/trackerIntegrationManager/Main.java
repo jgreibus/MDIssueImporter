@@ -6,6 +6,7 @@ import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
+import trackerIntegrationManager.options.IntegrationEnvironmentOptions;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class Main extends Plugin {
 	private void configureEnvironmentOptions() {
 		Application application = Application.getInstance();
 		EnvironmentOptions options = application.getEnvironmentOptions();
-		options.addGroup(new IntegrationOptions());
+		options.addGroup(new IntegrationEnvironmentOptions());
 
 		mEnvironmentOptionsListener = new EnvironmentOptions.EnvironmentChangeListener() {
 			@Override
