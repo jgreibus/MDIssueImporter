@@ -36,8 +36,8 @@ public class Main extends Plugin {
 
 	private NMAction getMenuActions(){
 		ActionsCategory category = new ActionsCategory(null, "subMenu");
-		category.addAction(new SimpleAction(null, "SubAction1"));
-		category.addAction(new SimpleAction(null, "SubAction2"));
+		category.addAction(new ImportProblems(null, "Import Problems"));
+		category.addAction(new ImportProblems(null, "SubAction2"));
 		return category;
 	}
 
