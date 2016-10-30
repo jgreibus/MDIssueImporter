@@ -45,12 +45,21 @@ public class RedmineIssueManager {
             e.printStackTrace();
         }
         issue.setDescription("New description");
+        issue.setSubject("New subject");
         issue.setEstimatedHours((float) 15.0);
         try {
             mgr.getIssueManager().update(issue);
+            //mgr.
         } catch (RedmineException e) {
             System.out.println(e);
         }
+        Issue i = null;
+        try {
+            i = mgr.getIssueManager().getIssueById(10889);
+        } catch (RedmineException e) {
+            e.printStackTrace();
+        }
+        System.out.println(i.getDescription().toString());
 
     }
 }
