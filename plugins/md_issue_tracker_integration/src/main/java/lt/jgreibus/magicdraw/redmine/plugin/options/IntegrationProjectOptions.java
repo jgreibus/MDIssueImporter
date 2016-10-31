@@ -1,9 +1,4 @@
-package trackerIntegrationManager.options;
-
-import com.nomagic.magicdraw.core.options.ProjectOptions;
-import com.nomagic.magicdraw.properties.Property;
-import com.nomagic.magicdraw.properties.PropertyResourceProvider;
-import com.nomagic.magicdraw.properties.StringProperty;
+package lt.jgreibus.magicdraw.redmine.plugin.options;
 
 public class IntegrationProjectOptions {
 

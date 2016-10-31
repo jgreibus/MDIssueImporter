@@ -1,4 +1,4 @@
-package trackerIntegrationManager;
+package lt.jgreibus.magicdraw.redmine.plugin;
 
 import com.nomagic.actions.ActionsCategory;
 import com.nomagic.actions.NMAction;
@@ -6,7 +6,7 @@ import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
-import trackerIntegrationManager.options.IntegrationEnvironmentOptions;
+import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 
 import java.util.List;
 

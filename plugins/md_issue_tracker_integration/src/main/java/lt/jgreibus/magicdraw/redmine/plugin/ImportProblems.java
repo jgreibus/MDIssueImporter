@@ -1,4 +1,4 @@
-package trackerIntegrationManager;
+package lt.jgreibus.magicdraw.redmine.plugin;
 
 import com.nomagic.magicdraw.actions.MDAction;
 
@@ -12,12 +12,12 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import trackerManager.RedmineIssueManager;
+import lt.jgreibus.magicdraw.redmine.trackerManager.RedmineIssueManager;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import static elementSelectionManager.ElementSelectionManager.createElementSelectionDialog;
+import static lt.jgreibus.magicdraw.redmine.element.manager.ElementSelectionManager.createElementSelectionDialog;
 
 class ImportProblems extends MDAction
 {

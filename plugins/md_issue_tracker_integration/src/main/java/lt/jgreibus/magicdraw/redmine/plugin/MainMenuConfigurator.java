@@ -1,12 +1,10 @@
-package trackerIntegrationManager;
+package lt.jgreibus.magicdraw.redmine.plugin;
 
 import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsCategory;
 import com.nomagic.actions.ActionsManager;
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
-import com.nomagic.magicdraw.core.Application;
-import com.nomagic.magicdraw.core.Project;
 
 public class MainMenuConfigurator implements AMConfigurator
     {

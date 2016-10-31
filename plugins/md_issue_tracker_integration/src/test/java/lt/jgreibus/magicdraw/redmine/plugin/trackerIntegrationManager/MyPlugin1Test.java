@@ -1,4 +1,4 @@
-package trackerIntegrationManager;
+package lt.jgreibus.magicdraw.redmine.plugin.trackerIntegrationManager;
 
 import com.nomagic.magicdraw.tests.MagicDrawTestCase;
 

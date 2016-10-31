@@ -1,14 +1,13 @@
-package trackerIntegrationManager.options;
+package lt.jgreibus.magicdraw.redmine.plugin.options;
 
 import com.nomagic.magicdraw.core.options.AbstractPropertyOptionsGroup;
-import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.icons.IconsFactory;
 import com.nomagic.magicdraw.properties.ChoiceProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.PropertyResourceProvider;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import resources.IntegrationEnvOptResources;
+import lt.jgreibus.magicdraw.redmine.resources.IntegrationEnvOptResources;
 
 import javax.swing.*;
 import java.util.Arrays;

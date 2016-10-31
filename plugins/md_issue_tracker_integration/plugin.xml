@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
-        id="trackerIntegrationManager"
+        id="lt.jgreibus.magicdraw.redmine.trackerIntegrationManager"
         name="MagicDraw and Issue Tracker intgeration plugin"
         version="1.0"
         provider-name="justasg.com"
-        class="trackerIntegrationManager.Main">
+        class="lt.jgreibus.magicdraw.redmine.plugin.Main">
 
     <requires>
         <api version="1.2"/>
     </requires>
 
     <runtime>
-        <library name="trackerIntegrationManager.jar"/>
+        <library name="lt.jgreibus.magicdraw.redmine.trackerIntegrationManager.jar"/>
     </runtime>
 </plugin>

@@ -1,14 +1,13 @@
-package trackerManager;
+package lt.jgreibus.magicdraw.redmine.trackerManager;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.taskadapter.redmineapi.IssueManager;
 import com.taskadapter.redmineapi.RedmineException;
 import com.taskadapter.redmineapi.RedmineManagerFactory;
 import com.taskadapter.redmineapi.bean.Issue;
 
 import java.util.List;
 
-import static elementCreationManager.ElementCreationManager.createStereotypedClassElement;
+import static lt.jgreibus.magicdraw.redmine.element.manager.ElementCreationManager.createStereotypedClassElement;
 
 public class RedmineIssueManager {
     final static String uri = "https://redmine.softneta.com";
@@ -61,5 +60,15 @@ public class RedmineIssueManager {
         }
         System.out.println(i.getDescription().toString());
 
+    }
+
+    public static void main(String[] args) throws RedmineException {
+        System.setProperty("jsse.enableSNIExtension", "false");
+        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, apiAccessKey);
+        Issue issue = mgr.getIssueManager().getIssueById(10889);
+        issue.setDescription("New description");
+        issue.setSubject("New subject");
+        issue.setNotes("hi");
+        mgr.getIssueManager().update(issue);
     }
 }
