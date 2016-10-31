@@ -1,4 +1,4 @@
-package lt.jgreibus.magicdraw.redmine.plugin;
+package lt.jgreibus.magicdraw.redmine.plugin.menu;
 
 import com.nomagic.magicdraw.actions.MDAction;
 
@@ -19,7 +19,7 @@ import java.util.List;
 
 import static lt.jgreibus.magicdraw.redmine.element.manager.ElementSelectionManager.createElementSelectionDialog;
 
-class ImportProblems extends MDAction
+public class ImportProblems extends MDAction
 {
     public ImportProblems(String id, String name)
     {
@@ -30,11 +30,6 @@ class ImportProblems extends MDAction
      */
     public void actionPerformed(ActionEvent e)
     {
-        //JOptionPane.showMessageDialog(MDDialogParentProvider.getProvider().getDialogParent(), "This is:" + getName());
-        Project project = Application.getInstance().getProject();
-        Profile profile = StereotypesHelper.getProfile(project, "UML_Standard_Profile");
-        Stereotype stereotype = StereotypesHelper.getStereotype(project, "DiagramLegend", profile);
-
         List<Class> types = ClassTypes.getSubtypes(Package.class);
         ElementSelectionDlg elementSelectionDlg = createElementSelectionDialog(types);
 

@@ -6,6 +6,8 @@ import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
+import lt.jgreibus.magicdraw.redmine.plugin.menu.ImportProblems;
+import lt.jgreibus.magicdraw.redmine.plugin.menu.UpdateRedmineIssues;
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 
 import java.util.List;
