@@ -35,40 +35,31 @@ public class RedmineIssueManager {
         }
     }
 
-    public static void AddIssueDescription(){
+    public static void AddIssueDescription(String issueID, String description) {
         com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, apiAccessKey);
         Issue issue = null;
         try {
-            issue = mgr.getIssueManager().getIssueById(10889);
+            issue = mgr.getIssueManager().getIssueById(Integer.parseInt(issueID));
         } catch (RedmineException e) {
             e.printStackTrace();
         }
-        issue.setDescription("New description");
-        issue.setSubject("New subject");
-        issue.setEstimatedHours((float) 15.0);
+
+        StringBuilder sb = new StringBuilder();
+        String origin = issue.getDescription();
+        if (origin.length() > 0) {
+            sb.append(origin);
+            sb.append("=============Requirements=============");
+            sb.append(description);
+            issue.setDescription(sb.toString());
+        } else {
+            issue.setDescription(description);
+        }
+        issue.setNotes("Added requirements for: " + issueID);
         try {
             mgr.getIssueManager().update(issue);
             //mgr.
         } catch (RedmineException e) {
             System.out.println(e);
         }
-        Issue i = null;
-        try {
-            i = mgr.getIssueManager().getIssueById(10889);
-        } catch (RedmineException e) {
-            e.printStackTrace();
-        }
-        System.out.println(i.getDescription().toString());
-
-    }
-
-    public static void main(String[] args) throws RedmineException {
-        System.setProperty("jsse.enableSNIExtension", "false");
-        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, apiAccessKey);
-        Issue issue = mgr.getIssueManager().getIssueById(10889);
-        issue.setDescription("New description");
-        issue.setSubject("New subject");
-        issue.setNotes("hi");
-        mgr.getIssueManager().update(issue);
     }
 }

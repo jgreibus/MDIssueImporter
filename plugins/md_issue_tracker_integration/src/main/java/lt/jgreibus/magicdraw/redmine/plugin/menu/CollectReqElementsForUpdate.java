@@ -73,12 +73,9 @@ public class CollectReqElementsForUpdate extends MDAction{
                     Object[] i = getLinkedIssues(selectedElements).toArray(new Object[getLinkedIssues(selectedElements).size()]);
                     String selectedIssue = (String) JOptionPane.showInputDialog(MDDialogParentProvider.getProvider().getDialogParent(),
                             "Which one from listed issues should be updated?",
-                            "Select Issue", 1, null, i, null);
+                            "Select Issue", 3, null, i, null);
                 }
 
-                for (String i : getLinkedIssues(selectedElements)) {
-                    System.out.println(i);
-                }
             } else {
                 NotificationManager.getInstance().showNotification(new Notification("NO_SELECTION",
                         "Requirements were not selected",
