@@ -32,6 +32,21 @@ public class CollectReqElementsForUpdate extends MDAction{
         super(id, name, null, null);
     }
 
+    private static Collection<String> getLinkedIssues(Collection e) {
+
+        Collection<BaseElement> inputCollection = new ArrayList<>(e);
+        Collection<String> issueID = new ArrayList<>();
+        for (BaseElement element : inputCollection) {
+            if (StereotypesHelper.hasStereotype((Element) element, "Related Issue")) {
+                List<String> issue = StereotypesHelper.getStereotypePropertyValueAsString((Element) element, "Related Issue", "issueID");
+                if (issue.size() == 1 && !issueID.contains(issue.get(0))) {
+                    issueID.add(issue.get(0));
+                }
+            }
+        }
+        return issueID;
+    }
+
     public void actionPerformed(ActionEvent e) {
 
         List<java.lang.Class> types = ClassTypes.getSubtypes(Class.class);
@@ -46,8 +61,6 @@ public class CollectReqElementsForUpdate extends MDAction{
 
         if (elementSelectionDlg.isOkClicked()) {
 
-            String s = (String) JOptionPane.showInputDialog(MDDialogParentProvider.getProvider().getDialogParent(), "What is issue ID?");
-
             Collection<BaseElement> selectedElements = new ArrayList<>();
             List<BaseElement> candidates = elementSelectionDlg.getSelectedElements();
             if (!candidates.isEmpty()) {
@@ -56,6 +69,16 @@ public class CollectReqElementsForUpdate extends MDAction{
                         selectedElements.add(bEl);
                     }
                 }
+                if (getLinkedIssues(selectedElements).size() > 0) {
+                    Object[] i = getLinkedIssues(selectedElements).toArray(new Object[getLinkedIssues(selectedElements).size()]);
+                    String selectedIssue = (String) JOptionPane.showInputDialog(MDDialogParentProvider.getProvider().getDialogParent(),
+                            "Which one from listed issues should be updated?",
+                            "Select Issue", 1, null, i, null);
+                }
+
+                for (String i : getLinkedIssues(selectedElements)) {
+                    System.out.println(i);
+                }
             } else {
                 NotificationManager.getInstance().showNotification(new Notification("NO_SELECTION",
                         "Requirements were not selected",
@@ -63,11 +86,5 @@ public class CollectReqElementsForUpdate extends MDAction{
             }
             System.out.println(ElementParserManeger.constructHTML(selectedElements));
         }
-//        private static Collection<String> getLinkedIssues(Collection e){
-//
-//        Collection<String> issueID = new ArrayList<>();
-//        for(BaseElement element : e){
-//            if(StereotypesHelper.hasStereotype((Element)element, ""))
-//        }
     }
 }
