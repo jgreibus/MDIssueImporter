@@ -7,7 +7,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ElementParserManeger {
+public class HTMLbuilder {
 
     public static String constructHTML(Collection selectedElements){
 

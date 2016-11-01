@@ -15,7 +15,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import lt.jgreibus.magicdraw.redmine.element.manager.ElementParserManeger;
+import lt.jgreibus.magicdraw.redmine.element.manager.HTMLbuilder;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -48,14 +48,12 @@ public class CollectReqElementsForUpdate extends MDAction{
     }
 
     public void actionPerformed(ActionEvent e) {
-
         List<java.lang.Class> types = ClassTypes.getSubtypes(Class.class);
 
         Project project = Application.getInstance().getProject();
         Profile profile = StereotypesHelper.getProfile(project, "SysML Profile");
         Stereotype stereotype = StereotypesHelper.getStereotype(project, "Requirement", profile);
 
-        //RedmineIssueManager.AddIssueDescription();
         ElementSelectionDlg elementSelectionDlg = createStereotypedElementsSelectionDialog(types, stereotype);
         elementSelectionDlg.setVisible(true);
 
@@ -69,11 +67,22 @@ public class CollectReqElementsForUpdate extends MDAction{
                         selectedElements.add(bEl);
                     }
                 }
-                if (getLinkedIssues(selectedElements).size() > 0) {
+                if (getLinkedIssues(selectedElements).size() > 1) {
                     Object[] i = getLinkedIssues(selectedElements).toArray(new Object[getLinkedIssues(selectedElements).size()]);
                     String selectedIssue = (String) JOptionPane.showInputDialog(MDDialogParentProvider.getProvider().getDialogParent(),
                             "Which one from listed issues should be updated?",
                             "Select Issue", 3, null, i, null);
+                    //TODO
+                    //RedmineIssueManager.AddIssueDescription(selectedIssue, HTMLbuilder.constructHTML(selectedElements));
+                } else if (getLinkedIssues(selectedElements).size() == 1) {
+                    //TODO
+                    // RedmineIssueManager.AddIssueDescription(getLinkedIssues(selectedElements).iterator().next(),
+                    //        HTMLbuilder.constructHTML(selectedElements));
+                } else {
+                    String selectedIssue = (String) JOptionPane.showInputDialog(MDDialogParentProvider.getProvider().getDialogParent(),
+                            "Enter the issue ID that should be updated", "Enter issue ID", 1);
+                    //TODO
+                    //RedmineIssueManager.AddIssueDescription(selectedIssue, HTMLbuilder.constructHTML(selectedElements));
                 }
 
             } else {
@@ -81,7 +90,7 @@ public class CollectReqElementsForUpdate extends MDAction{
                         "Requirements were not selected",
                         "Requirement element were not selected and issue update is stopped.", NotificationSeverity.WARNING));
             }
-            System.out.println(ElementParserManeger.constructHTML(selectedElements));
+            System.out.println(HTMLbuilder.constructHTML(selectedElements));
         }
     }
 }
