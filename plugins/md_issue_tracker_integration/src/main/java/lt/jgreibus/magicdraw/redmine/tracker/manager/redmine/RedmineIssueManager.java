@@ -1,4 +1,4 @@
-package lt.jgreibus.magicdraw.redmine.trackerManager;
+package lt.jgreibus.magicdraw.redmine.tracker.manager.redmine;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.taskadapter.redmineapi.RedmineException;

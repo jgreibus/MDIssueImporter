@@ -1,6 +1,5 @@
 package lt.jgreibus.magicdraw.redmine.element.manager;
 
-import com.nomagic.ci.persistence.local.internal.E;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
@@ -16,8 +15,6 @@ import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.sun.org.apache.bcel.internal.generic.Select;
-import com.sun.org.apache.bcel.internal.generic.Type;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -53,7 +50,8 @@ public class ElementSelectionManager {
     }
 
     public static ElementSelectionDlg createStereotypedElementsSelectionDialog(List types, Stereotype stereotype) {
-        SelectElementTypes selectElementTypes = new SelectElementTypes(types, types, null, types);
+
+        SelectElementTypes selectElementTypes = new SelectElementTypes(types, types, stereotype);
 
         TypeFilter selectableFilter = new TypeFilterImpl(selectElementTypes.select) {
             @Override
@@ -73,7 +71,7 @@ public class ElementSelectionManager {
         ElementSelectionDlg selectionDlg = ElementSelectionDlgFactory.create(dialogParent, "Select stereotyped elements", null);
 
         SelectElementInfo selectElementInfo = new SelectElementInfo(true, false, null, true);
-        //ElementSelectionDlgFactory.initMultiple(selectionDlg, selectElementInfo, visibleFilter, selectableFilter, null, null);
+        ElementSelectionDlgFactory.initMultiple(selectionDlg, selectElementTypes, selectElementInfo, (Object[]) null);
 
         return selectionDlg;
     }

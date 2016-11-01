@@ -7,7 +7,7 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import lt.jgreibus.magicdraw.redmine.plugin.menu.ImportProblems;
-import lt.jgreibus.magicdraw.redmine.plugin.menu.UpdateRedmineIssues;
+import lt.jgreibus.magicdraw.redmine.plugin.menu.CollectReqElementsForUpdate;
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class Main extends Plugin {
 	private NMAction getMenuActions(){
 		ActionsCategory category = new ActionsCategory(null, "subMenu");
 		category.addAction(new ImportProblems(null, "Import Problems"));
-		category.addAction(new UpdateRedmineIssues(null, "Update Redmine Issue"));
+		category.addAction(new CollectReqElementsForUpdate(null, "Update Redmine Issue"));
 		return category;
 	}
 
