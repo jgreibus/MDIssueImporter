@@ -1,13 +1,16 @@
 package lt.jgreibus.magicdraw.redmine.tracker.manager.redmine;
 
+import com.nomagic.magicdraw.ui.notification.Notification;
+import com.nomagic.magicdraw.ui.notification.NotificationManager;
+import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.taskadapter.redmineapi.RedmineException;
 import com.taskadapter.redmineapi.RedmineManagerFactory;
 import com.taskadapter.redmineapi.bean.Issue;
+import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCreator;
+import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCreator.StereotypeNotDefinedException;
 
 import java.util.List;
-
-import static lt.jgreibus.magicdraw.redmine.element.manager.ElementCreationManager.createStereotypedClassElement;
 
 public class RedmineIssueManager {
     final static String uri = "https://redmine.softneta.com";
@@ -27,11 +30,16 @@ public class RedmineIssueManager {
         } catch (RedmineException e) {
             e.printStackTrace();
         }
-        for (Issue issue : issues) {
-            System.out.println(issue.toString());
-            final String issueID = issue.getId().toString();
-            final String subject = issue.getSubject().toString();
-            createStereotypedClassElement(owner, subject, issueID);
+        try {
+            for (Issue issue : issues) {
+                System.out.println(issue.toString());
+                final String issueID = issue.getId().toString();
+                final String subject = issue.getSubject().toString();
+                new StereotypedClassElementCreator().create(owner, subject, issueID);
+            }
+        } catch (StereotypeNotDefinedException e) {
+            NotificationManager.getInstance().showNotification(new Notification(
+                    e.getId(), e.getTitle(), e.getMessage(), NotificationSeverity.ERROR));
         }
     }
 
