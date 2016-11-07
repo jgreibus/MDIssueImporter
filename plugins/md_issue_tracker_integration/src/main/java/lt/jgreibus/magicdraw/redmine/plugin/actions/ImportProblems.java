@@ -1,7 +1,6 @@
-package lt.jgreibus.magicdraw.redmine.plugin.menu;
+package lt.jgreibus.magicdraw.redmine.plugin.actions;
 
 import com.nomagic.magicdraw.actions.MDAction;
-
 import com.nomagic.magicdraw.ui.dialogs.selection.ElementSelectionDlg;
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.magicdraw.uml.ClassTypes;

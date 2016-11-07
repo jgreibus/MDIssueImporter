@@ -1,4 +1,4 @@
-package lt.jgreibus.magicdraw.redmine.plugin.menu;
+package lt.jgreibus.magicdraw.redmine.plugin.actions;
 
 import com.nomagic.magicdraw.actions.MDAction;
 import com.nomagic.magicdraw.core.Application;
