@@ -1,5 +1,6 @@
 package lt.jgreibus.magicdraw.redmine.tracker.manager.redmine;
 
+import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
@@ -9,21 +10,33 @@ import com.taskadapter.redmineapi.RedmineManagerFactory;
 import com.taskadapter.redmineapi.bean.Issue;
 import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCreator;
 import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCreator.StereotypeNotDefinedException;
+import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 
 import java.util.List;
 
 public class RedmineIssueManager {
-    final static String uri = "https://redmine.softneta.com";
-    final static String apiAccessKey = "15f2ae24367ff01363f473221a747e763c559192";
-    //        final String uri = ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getTrackerUrlId();
-//        final String apiAccessKey = ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getUserAPIKeyValue();
+
+    private static final String getURI() {
+        String uri = ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getTrackerUrlId();
+        if (!uri.isEmpty() || uri.length() != 0)
+            return uri;
+//        else{
+//            NotificationManager.getInstance().showNotification( new Notification("URI", "Tracker URL is not specified",
+//                    "Tracker URL must be specified in the Environment Options", NotificationSeverity.ERROR));
+//        return;}
+    }
+
+    private static final String getApiAccessKey() {
+        return ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getUserAPIKeyValue();
+    }
+
     final static String projectKey = "151";
     final static Integer queryId = 162; // any
 
     public static void GetIssues(Element owner) {
 
 
-        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, apiAccessKey);
+        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
         List<Issue> issues = null;
         try {
             issues = mgr.getIssueManager().getIssues(null, queryId);
@@ -44,9 +57,8 @@ public class RedmineIssueManager {
                     e.getId(), e.getTitle(), e.getMessage(), NotificationSeverity.ERROR));
         }
     }
-
     public static void AddIssueDescription(String issueID, String description) {
-        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, apiAccessKey);
+        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
         Issue issue = null;
         try {
             issue = mgr.getIssueManager().getIssueById(Integer.parseInt(issueID));

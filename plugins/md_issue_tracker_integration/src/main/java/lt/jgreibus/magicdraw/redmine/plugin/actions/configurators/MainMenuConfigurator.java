@@ -1,4 +1,4 @@
-package lt.jgreibus.magicdraw.redmine.plugin;
+package lt.jgreibus.magicdraw.redmine.plugin.actions.configurators;
 
 import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsCategory;
@@ -24,7 +24,7 @@ public class MainMenuConfigurator implements AMConfigurator
 
             ActionsCategory category = (ActionsCategory) manager.getCategory(PARENT_MENU);
 
-            if (category != null) {
+            if (category == null) {
                 category = new MDActionsCategory(MENU, MENU);
                 category.setNested(true);
                 manager.addCategory(category);

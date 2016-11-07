@@ -1,6 +1,7 @@
 package lt.jgreibus.magicdraw.redmine.plugin.actions;
 
 import com.nomagic.magicdraw.actions.MDAction;
+import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.ui.dialogs.selection.ElementSelectionDlg;
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.magicdraw.uml.ClassTypes;
@@ -19,9 +20,8 @@ public class ImportProblems extends MDAction
     {
         super(id, name, null, null);
     }
-    /**
-     * Shows message.
-     */
+
+
     public void actionPerformed(ActionEvent e)
     {
         List<Class> types = ClassTypes.getSubtypes(Package.class);
@@ -33,5 +33,10 @@ public class ImportProblems extends MDAction
             BaseElement selected = elementSelectionDlg.getSelectedElement();
             RedmineIssueManager.GetIssues((Element) selected);
         }
+    }
+
+    @Override
+    public void updateState() {
+        setEnabled(Application.getInstance().getProject() != null);
     }
 }

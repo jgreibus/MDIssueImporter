@@ -93,4 +93,9 @@ public class CollectReqElementsForUpdate extends MDAction{
             System.out.println(HTMLbuilder.constructHTML(selectedElements));
         }
     }
+
+    @Override
+    public void updateState() {
+        setEnabled(Application.getInstance().getProject() != null);
+    }
 }
