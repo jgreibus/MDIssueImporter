@@ -18,7 +18,7 @@ public class RedmineIssueManager {
 
     private static final String getURI() {
         String uri = ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getTrackerUrlId();
-        if (!uri.isEmpty() || uri.length() != 0)
+        //if (!uri.isEmpty() || uri.length() != 0)
             return uri;
 //        else{
 //            NotificationManager.getInstance().showNotification( new Notification("URI", "Tracker URL is not specified",
