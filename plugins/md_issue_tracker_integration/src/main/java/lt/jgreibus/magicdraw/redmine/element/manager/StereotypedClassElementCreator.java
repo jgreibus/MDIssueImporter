@@ -24,7 +24,8 @@ import static com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper.canAssignStereo
 public class StereotypedClassElementCreator {
 
     private static final Project PROJECT = Application.getInstance().getProject();
-
+    private static Integer updatedCount = 0;
+    private static Integer createdCount = 0;
     private final Stereotype stereotype;
 
     public StereotypedClassElementCreator() {
@@ -40,6 +41,14 @@ public class StereotypedClassElementCreator {
         return (Stereotype) property.getValue();
     }
 
+    public static final Integer getUpdatedElementCount() {
+        return updatedCount;
+    }
+
+    public static final Integer getCreatedElementCount() {
+        return createdCount;
+    }
+
     public void create(Element owner, String subject, String issue) {
         final Collection<Class> existingElements = Finder.byTypeRecursively().find(PROJECT, new java.lang.Class[]{Class.class});
         final Optional<Class> element = existingElements.stream()
@@ -47,8 +56,10 @@ public class StereotypedClassElementCreator {
                 .filter((c) -> issue.equals(getIssueID(c)))
                 .findAny();
 
-        if (element.isPresent())
+        if (element.isPresent()) {
             element.get().setName(subject);
+            updatedCount = updatedCount + 1;
+        }
         else if (!SessionManager.getInstance().isSessionCreated(PROJECT)) {
             ElementsFactory factory = PROJECT.getElementsFactory();
             SessionManager.getInstance().createSession(PROJECT, "Create element");
@@ -66,6 +77,7 @@ public class StereotypedClassElementCreator {
         Class c = factory.createClassInstance();
         ModelElementsManager.getInstance().addElement(c, owner);
         c.setName(subject);
+        createdCount = createdCount + 1;
         if (canAssignStereotype(c, stereotype)) {
             addStereotype(c, stereotype);
             StereotypesHelper.setStereotypePropertyValue(c, stereotype, "issue", issue);

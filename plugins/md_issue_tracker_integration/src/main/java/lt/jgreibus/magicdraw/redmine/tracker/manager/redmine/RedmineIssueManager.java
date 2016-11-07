@@ -30,13 +30,15 @@ public class RedmineIssueManager {
         } catch (RedmineException e) {
             e.printStackTrace();
         }
+        StereotypedClassElementCreator elementCreator = new StereotypedClassElementCreator();
         try {
             for (Issue issue : issues) {
                 System.out.println(issue.toString());
                 final String issueID = issue.getId().toString();
                 final String subject = issue.getSubject().toString();
-                new StereotypedClassElementCreator().create(owner, subject, issueID);
+                elementCreator.create(owner, subject, issueID);
             }
+            NotificationManager.getInstance().showNotification(new Notification("STATISTIC", "Import statistic:", String.format("Updated: " + elementCreator.getUpdatedElementCount() + "%nCreated: " + elementCreator.getCreatedElementCount())));
         } catch (StereotypeNotDefinedException e) {
             NotificationManager.getInstance().showNotification(new Notification(
                     e.getId(), e.getTitle(), e.getMessage(), NotificationSeverity.ERROR));
