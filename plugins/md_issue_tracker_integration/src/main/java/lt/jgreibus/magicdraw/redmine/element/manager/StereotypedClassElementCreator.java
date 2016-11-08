@@ -50,6 +50,7 @@ public class StereotypedClassElementCreator {
     }
 
     public void create(Element owner, String subject, String issue) {
+
         final Collection<Class> existingElements = Finder.byTypeRecursively().find(PROJECT, new java.lang.Class[]{Class.class});
         final Optional<Class> element = existingElements.stream()
                 .filter((c) -> StereotypesHelper.hasStereotype(c, stereotype))

@@ -1,6 +1,7 @@
 package lt.jgreibus.magicdraw.redmine.tracker.manager.redmine;
 
 import com.nomagic.magicdraw.core.Application;
+import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
@@ -12,34 +13,49 @@ import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCrea
 import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCreator.StereotypeNotDefinedException;
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 
+import javax.annotation.Nullable;
 import java.util.List;
+
+import static com.nomagic.magicdraw.core.options.ProjectOptions.PROJECT_GENERAL_PROPERTIES;
 
 public class RedmineIssueManager {
 
+    private final static Project PROJECT = Application.getInstance().getProject();
+
+    @Nullable
     private static final String getURI() {
-        String uri = ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getTrackerUrlId();
-        //if (!uri.isEmpty() || uri.length() != 0)
-            return uri;
-//        else{
-//            NotificationManager.getInstance().showNotification( new Notification("URI", "Tracker URL is not specified",
-//                    "Tracker URL must be specified in the Environment Options", NotificationSeverity.ERROR));
-//        return;}
+        return ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getTrackerUrlId();
     }
 
+    @Nullable
     private static final String getApiAccessKey() {
         return ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getUserAPIKeyValue();
     }
 
-    final static String projectKey = "151";
-    final static Integer queryId = 162; // any
+    @Nullable
+    private static final String getProjectID() {
+        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "PROJECT_ID");
+        return (String) property.getValue();
+    }
 
-    public static void GetIssues(Element owner) {
+    @Nullable
+    private static final Integer getQueryID() {
+        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "QUERY_ID");
+        return (Integer) property.getValue();
+    }
 
+    //final static String projectKey = "151";
+    // final static Integer queryId = 162; // any
 
-        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
+    public static void GetRedmineIssues(Element owner) {
+
+        if (!getURI().isEmpty() && !getApiAccessKey().isEmpty()) {
+            com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
+
         List<Issue> issues = null;
         try {
-            issues = mgr.getIssueManager().getIssues(null, queryId);
+            if (!getProjectID().isEmpty() || getQueryID() != 0)
+                issues = mgr.getIssueManager().getIssues(getProjectID(), getQueryID());
         } catch (RedmineException e) {
             e.printStackTrace();
         }
@@ -51,11 +67,20 @@ public class RedmineIssueManager {
                 final String subject = issue.getSubject().toString();
                 elementCreator.create(owner, subject, issueID);
             }
-            NotificationManager.getInstance().showNotification(new Notification("STATISTIC", "Import statistic:", String.format("Updated: " + elementCreator.getUpdatedElementCount() + "%nCreated: " + elementCreator.getCreatedElementCount())));
+
+            NotificationManager.getInstance().showNotification(new Notification("STATISTIC",
+                    "Redmine import statistic:",
+                    "New elements were created: " + elementCreator.getCreatedElementCount()
+                            + " , updated: " + elementCreator.getUpdatedElementCount()));
         } catch (StereotypeNotDefinedException e) {
             NotificationManager.getInstance().showNotification(new Notification(
                     e.getId(), e.getTitle(), e.getMessage(), NotificationSeverity.ERROR));
         }
+    } else
+            NotificationManager.getInstance().showNotification(new Notification("NOT_DEFINED",
+                    "Configuration properties are missing",
+                    "Tracker URL or/and user access API is missing. Please specify missing properties in Environment Options",
+                    NotificationSeverity.ERROR));
     }
     public static void AddIssueDescription(String issueID, String description) {
         com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactManager">
+    <artifact type="jar" build-on-make="true" name="issues_tracker_integration_plugin">
+      <output-path>$PROJECT_DIR$/out/artifacts/issues_tracker_integration_plugin</output-path>
+      <root id="archive" name="issues_tracker_integration_plugin.jar" />
+    </artifact>
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />

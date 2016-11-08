@@ -2,14 +2,12 @@ package lt.jgreibus.magicdraw.redmine.plugin.options;
 
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptionsConfigurator;
-import com.nomagic.magicdraw.properties.ElementProperty;
-import com.nomagic.magicdraw.properties.Property;
-import com.nomagic.magicdraw.properties.PropertyResourceProvider;
-import com.nomagic.magicdraw.properties.StringProperty;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
+import com.nomagic.magicdraw.properties.*;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 
 import java.util.Collections;
+
+import static com.nomagic.magicdraw.properties.NumberProperty.INT;
 
 public class IntegrationProjectOptions {
 
@@ -20,8 +18,6 @@ public class IntegrationProjectOptions {
                 Property project_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "PROJECT_ID");
                 Property query_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "QUERY_ID");
                 ElementProperty stereotype_property = new ElementProperty("STEREOTYPE_ID", null);
-                ElementProperty base_element = new ElementProperty("BASE_ELEMENT_ID", null);
-                //Property base_element = new TypeProperty("BASE_ELEMENT_ID", null);
 
                 if (project_property == null) {
                     project_property = new StringProperty("PROJECT_ID", "description");
@@ -43,7 +39,7 @@ public class IntegrationProjectOptions {
                     projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, project_property);
                 }
                 if (query_property == null) {
-                    query_property = new StringProperty("QUERY_ID", null);
+                    query_property = new NumberProperty("QUERY_ID", null, INT, 0, 100000);
                     query_property.setGroup("INTEGRATION_GROUP");
                     query_property.setResourceProvider(new PropertyResourceProvider() {
                         public String getString(String string, Property property) {
@@ -82,25 +78,6 @@ public class IntegrationProjectOptions {
                     }
                 });
                 projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, stereotype_property);
-
-                base_element.setSelectableTypes(Collections.singleton(Class.class));
-                base_element.setGroup("INTEGRATION_GROUP");
-                base_element.setResourceProvider(new PropertyResourceProvider() {
-                    public String getString(String string, Property property) {
-
-                        if ("BASE_ELEMENT_ID".equals(string)) {
-                            return "Base element";
-                        }
-                        if ("BASE_ELEMENT_ID_DESCRIPTION".equals(string)) {
-                            return "Select a type of which elements will be created during issue import";
-                        }
-                        if ("INTEGRATION_GROUP".equals(string)) {
-                            return "Integration";
-                        }
-                        return string;
-                    }
-                });
-                projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, base_element);
             }
 
             @Override

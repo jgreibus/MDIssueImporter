@@ -6,7 +6,6 @@ import com.nomagic.magicdraw.properties.ChoiceProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.PropertyResourceProvider;
 import com.nomagic.magicdraw.properties.StringProperty;
-import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import lt.jgreibus.magicdraw.redmine.resources.IntegrationEnvOptResources;
 
 import javax.swing.*;
@@ -21,21 +20,8 @@ public class IntegrationEnvironmentOptions extends AbstractPropertyOptionsGroup
     public static final String SELECTION_GROUP = "INTEGRATION_SELECTION_GROUP";
     public static final String INTEGRATION_OPTIONS_GROUP = "INTEGRATION_OPTIONS_GROUP";
     public static final String INTEGRATION_ID = "INTEGRATION_ID";
-    private static final Icon ICON = IconsFactory.getIcon("icon.png");
-
-    private static String TRACKER_1 = "Redmine";
-    private static String TRACKER_2 = "JIRA";
-
-    public static final List TRACKER_VALUES = Arrays.asList(TRACKER_1, TRACKER_2);
-
-    private static final String OPTION_GROUP_NAME = "OPTION_GROUP_NAME";
-
     public static final String USER_API_KEY_ID = "USER_API_KEY_ID";
     public static final String TRACKER_URL_ID = "TRACKER_URL_ID";
-    // public static final Stereotype PROBLEM_STEREOTYPE = "STEREOTYPE_FOR_PROBLEM_ELEMENT";
-
-    public final String userAPIKey = getUserAPIKeyValue();
-
     public static final PropertyResourceProvider PROPERTY_RESOURCE_PROVIDER = new PropertyResourceProvider()
     {
         @Override
@@ -44,6 +30,11 @@ public class IntegrationEnvironmentOptions extends AbstractPropertyOptionsGroup
             return IntegrationEnvOptResources.getString(key);
         }
     };
+    private static final Icon ICON = IconsFactory.getIcon("icons/icon.png");
+    private static final String OPTION_GROUP_NAME = "OPTION_GROUP_NAME";
+    private static String TRACKER_1 = "Redmine";
+    private static String TRACKER_2 = "JIRA (Not Available)";
+    public static final List TRACKER_VALUES = Arrays.asList(TRACKER_1, TRACKER_2);
 
 
     public IntegrationEnvironmentOptions()
@@ -101,21 +92,15 @@ public class IntegrationEnvironmentOptions extends AbstractPropertyOptionsGroup
         return (String) property.getValue();
     }
 
-    public void setProblemStereotype(Stereotype e) {
-
-    }
-
     @Override
     public String getName()
     {
-
         return IntegrationEnvOptResources.getString(OPTION_GROUP_NAME);
     }
 
     @Override
     public javax.swing.Icon getGroupIcon()
     {
-
         return ICON;
     }
 }

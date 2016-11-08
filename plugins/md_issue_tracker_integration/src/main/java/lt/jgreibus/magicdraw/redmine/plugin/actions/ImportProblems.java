@@ -31,7 +31,7 @@ public class ImportProblems extends MDAction
 
         if (elementSelectionDlg.isOkClicked()) {
             BaseElement selected = elementSelectionDlg.getSelectedElement();
-            RedmineIssueManager.GetIssues((Element) selected);
+            RedmineIssueManager.GetRedmineIssues((Element) selected);
         }
     }
 

@@ -15,8 +15,6 @@ import lt.jgreibus.magicdraw.redmine.plugin.actions.configurators.MainMenuConfig
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationProjectOptions;
 
-import java.util.List;
-
 public class Main extends Plugin {
 
 	private EnvironmentOptions.EnvironmentChangeListener mEnvironmentOptionsListener;
@@ -31,7 +29,6 @@ public class Main extends Plugin {
 		final DefaultBrowserAction browserAction = new ImportProblemsInBrowser();
 		BrowserContextMenuConfigurator configurator = new BrowserContextMenuConfigurator(browserAction);
 		manager.addContainmentBrowserContextConfigurator(configurator);
-		manager.addContainmentBrowserShortcutsConfigurator(configurator);
 	}
 
 	@Override
@@ -45,8 +42,8 @@ public class Main extends Plugin {
 	}
 
 	private NMAction getMenuActions(){
-		ActionsCategory category = new ActionsCategory(null, "subMenu");
-		category.addAction(new ImportProblems(null, "Import Problems from Redmine"));
+        ActionsCategory category = new ActionsCategory(null, "");
+        category.addAction(new ImportProblems(null, "Import Problems from Redmine"));
 		category.addAction(new CollectReqElementsForUpdate(null, "Update Redmine Issue"));
 		return category;
 	}
@@ -56,17 +53,17 @@ public class Main extends Plugin {
 		EnvironmentOptions options = application.getEnvironmentOptions();
 		options.addGroup(new IntegrationEnvironmentOptions());
 
-		mEnvironmentOptionsListener = new EnvironmentOptions.EnvironmentChangeListener() {
-			@Override
-			public void updateByEnvironmentProperties(List props) {
-				System.out.println("Environment options changed:");
-
-				for (Object o : props) {
-					System.out.println(o);
-				}
-			}
-		};
-
-		options.addEnvironmentChangeListener(mEnvironmentOptionsListener);
-	}
+//		mEnvironmentOptionsListener = new EnvironmentOptions.EnvironmentChangeListener() {
+//			@Override
+//			public void updateByEnvironmentProperties(List props) {
+//				System.out.println("Environment options changed:");
+//
+//				for (Object o : props) {
+//					System.out.println(o);
+//				}
+//			}
+//		};
+//
+//		options.addEnvironmentChangeListener(mEnvironmentOptionsListener);
+    }
 }
