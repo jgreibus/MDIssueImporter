@@ -12,6 +12,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.uml2.impl.ElementsFactory;
+import lt.jgreibus.magicdraw.redmine.exception.NotifiedException;
 
 import java.util.Collection;
 import java.util.List;
@@ -94,23 +95,10 @@ public class StereotypedClassElementCreator {
         return list.isEmpty() ? null : (String) list.get(0);
     }
 
-    public static final class StereotypeNotDefinedException extends RuntimeException {
-
-        private final String id;
-        private final String title;
+    public static final class StereotypeNotDefinedException extends NotifiedException {
 
         private StereotypeNotDefinedException(String id, String title, String message) {
-            super(message);
-            this.id = id;
-            this.title = title;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getTitle() {
-            return title;
+            super(id, title, message);
         }
     }
 }

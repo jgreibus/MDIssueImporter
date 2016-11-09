@@ -11,6 +11,7 @@ import com.taskadapter.redmineapi.RedmineManagerFactory;
 import com.taskadapter.redmineapi.bean.Issue;
 import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCreator;
 import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCreator.StereotypeNotDefinedException;
+import lt.jgreibus.magicdraw.redmine.exception.NotifiedException;
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 
 import javax.annotation.Nullable;
@@ -40,12 +41,17 @@ public class RedmineIssueManager {
 
     @Nullable
     private static final Integer getQueryID() {
-        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "QUERY_ID");
-        return (Integer) property.getValue();
-    }
 
-    //final static String projectKey = "151";
-    // final static Integer queryId = 162; // any
+        com.nomagic.magicdraw.properties.Property property;
+        Integer queryID = 0;
+        try {
+            property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "PROJECT_ID");
+            queryID = Integer.parseInt((String) property.getValue());
+        } catch (NumberFormatException e) {
+            throw new NotifiedException(e);
+        }
+        return queryID;
+    }
 
     public static void GetRedmineIssues(Element owner) {
 
@@ -107,6 +113,12 @@ public class RedmineIssueManager {
             //mgr.
         } catch (RedmineException e) {
             System.out.println(e);
+        }
+    }
+
+    public static final class ConfigurationPropertyMissingExcpetion extends NotifiedException {
+        private ConfigurationPropertyMissingExcpetion(String id, String title, String message) {
+            super(id, title, message);
         }
     }
 }

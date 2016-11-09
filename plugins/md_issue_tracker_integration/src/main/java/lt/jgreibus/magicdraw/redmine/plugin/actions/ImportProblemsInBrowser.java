@@ -6,6 +6,7 @@ import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
 import com.nomagic.ui.ScalableImageIcon;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
+import lt.jgreibus.magicdraw.redmine.exception.NotifiedException;
 import lt.jgreibus.magicdraw.redmine.tracker.manager.redmine.RedmineIssueManager;
 
 import javax.imageio.ImageIO;
@@ -23,13 +24,18 @@ public class ImportProblemsInBrowser extends DefaultBrowserAction {
         }
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
-        Tree tree = getTree();
-        Node node = tree.getSelectedNode();
+        try {
+            Tree tree = getTree();
+            Node node = tree.getSelectedNode();
 
-        Object userObject = node.getUserObject();
-        if (userObject instanceof Package)
-            RedmineIssueManager.GetRedmineIssues((Element) userObject);
+            Object userObject = node.getUserObject();
+            if (userObject instanceof Package)
+                RedmineIssueManager.GetRedmineIssues((Element) userObject);
+        } catch (NullPointerException ex) {
+            throw new NotifiedException(ex);
+        }
     }
 
     @Override

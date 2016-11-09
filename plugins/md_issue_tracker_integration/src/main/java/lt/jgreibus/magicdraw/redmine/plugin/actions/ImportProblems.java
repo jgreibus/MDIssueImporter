@@ -7,7 +7,9 @@ import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.magicdraw.uml.ClassTypes;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
+import lt.jgreibus.magicdraw.redmine.exception.NotifiedException;
 import lt.jgreibus.magicdraw.redmine.tracker.manager.redmine.RedmineIssueManager;
+import lt.jgreibus.magicdraw.redmine.utils.NotificationUtils;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -21,9 +23,10 @@ public class ImportProblems extends MDAction
         super(id, name, null, null);
     }
 
-
+    @Override
     public void actionPerformed(ActionEvent e)
     {
+        try {
         List<Class> types = ClassTypes.getSubtypes(Package.class);
         ElementSelectionDlg elementSelectionDlg = createElementSelectionDialog(types);
 
@@ -32,6 +35,9 @@ public class ImportProblems extends MDAction
         if (elementSelectionDlg.isOkClicked()) {
             BaseElement selected = elementSelectionDlg.getSelectedElement();
             RedmineIssueManager.GetRedmineIssues((Element) selected);
+        }
+        } catch (NotifiedException ex) {
+            NotificationUtils.showNotification(ex);
         }
     }
 

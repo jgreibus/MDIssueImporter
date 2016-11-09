@@ -2,12 +2,13 @@ package lt.jgreibus.magicdraw.redmine.plugin.options;
 
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptionsConfigurator;
-import com.nomagic.magicdraw.properties.*;
+import com.nomagic.magicdraw.properties.ElementProperty;
+import com.nomagic.magicdraw.properties.Property;
+import com.nomagic.magicdraw.properties.PropertyResourceProvider;
+import com.nomagic.magicdraw.properties.StringProperty;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 
 import java.util.Collections;
-
-import static com.nomagic.magicdraw.properties.NumberProperty.INT;
 
 public class IntegrationProjectOptions {
 
@@ -20,7 +21,7 @@ public class IntegrationProjectOptions {
                 ElementProperty stereotype_property = new ElementProperty("STEREOTYPE_ID", null);
 
                 if (project_property == null) {
-                    project_property = new StringProperty("PROJECT_ID", "description");
+                    project_property = new StringProperty("PROJECT_ID", null);
                     project_property.setGroup("INTEGRATION_GROUP");
                     project_property.setResourceProvider(new PropertyResourceProvider() {
                         public String getString(String string, Property property) {
@@ -39,7 +40,7 @@ public class IntegrationProjectOptions {
                     projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, project_property);
                 }
                 if (query_property == null) {
-                    query_property = new NumberProperty("QUERY_ID", null, INT, 0, 100000);
+                    query_property = new StringProperty("QUERY_ID", null);
                     query_property.setGroup("INTEGRATION_GROUP");
                     query_property.setResourceProvider(new PropertyResourceProvider() {
                         public String getString(String string, Property property) {
