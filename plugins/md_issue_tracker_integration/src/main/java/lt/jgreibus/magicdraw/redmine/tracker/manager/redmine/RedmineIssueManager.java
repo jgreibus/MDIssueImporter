@@ -116,6 +116,19 @@ public class RedmineIssueManager {
         }
     }
 
+    private static boolean containsRequirements(String issueID){
+        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
+        Issue issue = null;
+        try {
+            issue = mgr.getIssueManager().getIssueById(Integer.parseInt(issueID));
+        } catch (RedmineException e) {
+            e.printStackTrace();
+        }
+        String description = issue.getDescription();
+
+        return false;
+    }
+
     public static final class ConfigurationPropertyMissingExcpetion extends NotifiedException {
         private ConfigurationPropertyMissingExcpetion(String id, String title, String message) {
             super(id, title, message);
