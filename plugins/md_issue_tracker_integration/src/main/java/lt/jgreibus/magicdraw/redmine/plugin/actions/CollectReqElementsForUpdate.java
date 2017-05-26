@@ -73,16 +73,16 @@ public class CollectReqElementsForUpdate extends MDAction{
                             "Which one from listed issues should be updated?",
                             "Select Issue", 3, null, i, null);
                     //TODO
-                    //RedmineIssueManager.AddIssueDescription(selectedIssue, HTMLbuilder.constructHTML(selectedElements));
+                    //RedmineIssueManager.addIssueDescription(selectedIssue, HTMLbuilder.constructHTML(selectedElements));
                 } else if (getLinkedIssues(selectedElements).size() == 1) {
                     //TODO
-                    // RedmineIssueManager.AddIssueDescription(getLinkedIssues(selectedElements).iterator().next(),
+                    // RedmineIssueManager.addIssueDescription(getLinkedIssues(selectedElements).iterator().next(),
                     //        HTMLbuilder.constructHTML(selectedElements));
                 } else {
                     String selectedIssue = (String) JOptionPane.showInputDialog(MDDialogParentProvider.getProvider().getDialogParent(),
                             "Enter the issue ID that should be updated", "Enter issue ID", 1);
                     //TODO
-                    //RedmineIssueManager.AddIssueDescription(selectedIssue, HTMLbuilder.constructHTML(selectedElements));
+                    //RedmineIssueManager.addIssueDescription(selectedIssue, HTMLbuilder.constructHTML(selectedElements));
                 }
 
             } else {

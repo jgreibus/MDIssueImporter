@@ -32,7 +32,7 @@ public class ImportProblemsInBrowser extends DefaultBrowserAction {
 
             Object userObject = node.getUserObject();
             if (userObject instanceof Package)
-                RedmineIssueManager.GetRedmineIssues((Element) userObject);
+                RedmineIssueManager.getRedmineIssues((Element) userObject);
         } catch (NullPointerException ex) {
             throw new NotifiedException(ex);
         }

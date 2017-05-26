@@ -18,6 +18,9 @@ public class IntegrationProjectOptions {
 
                 Property project_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "PROJECT_ID");
                 Property query_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "QUERY_ID");
+                Property report_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "REPORT_URL");
+                Property requirement_cf_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "REQ_CUSTOM_FIELD");
+                Property testCase_cf_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "TC_CUSTOM_FIELD");
                 ElementProperty stereotype_property = new ElementProperty("STEREOTYPE_ID", null);
 
                 if (project_property == null) {
@@ -59,7 +62,68 @@ public class IntegrationProjectOptions {
                     });
                     projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, query_property);
                 }
+                if (report_property == null) {
+                    report_property = new StringProperty("REPORT_URL", null);
+                    report_property.setGroup("INTEGRATION_GROUP");
+                    report_property.setResourceProvider(new PropertyResourceProvider() {
+                        public String getString(String string, Property property) {
 
+                            if ("REPORT_URL".equals(string)) {
+                                return "Report URL";
+                            }
+                            if ("REPORT_URL_DESCRIPTION".equals(string)) {
+                                return "Property used to specify Requirement Web Report URL address";
+                            }
+                            if ("INTEGRATION_GROUP".equals(string)) {
+                                return "Integration";
+                            }
+                            return string;
+                        }
+                    });
+                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, report_property);
+                }
+                if (requirement_cf_property == null){
+                    requirement_cf_property = new StringProperty("REQ_CUSTOM_FIELD", null);
+                    requirement_cf_property.setGroup("INTEGRATION_GROUP");
+                    requirement_cf_property.setResourceProvider(new PropertyResourceProvider() {
+                        @Override
+                        public String getString(String string, Property property) {
+
+                            if ("REQ_CUSTOM_FIELD".equals(string)) {
+                                return "Requirement Custom Field";
+                            }
+                            if ("REQ_CUSTOM_FIELD_DESCRIPTION".equals(string)) {
+                                return "Property used to specify name of Redmine custom field which is used for storing link to requirement specification";
+                            }
+                            if ("INTEGRATION_GROUP".equals(string)) {
+                                return "Integration";
+                            }
+                            return string;
+                        }
+                    });
+                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, requirement_cf_property);
+                }
+                if (testCase_cf_property == null){
+                    testCase_cf_property = new StringProperty("TC_CUSTOM_FIELD", null);
+                    testCase_cf_property.setGroup("INTEGRATION_GROUP");
+                    testCase_cf_property.setResourceProvider(new PropertyResourceProvider() {
+                        @Override
+                        public String getString(String string, Property property) {
+
+                            if ("TC_CUSTOM_FIELD".equals(string)) {
+                                return "Test Case Custom Field";
+                            }
+                            if ("TC_CUSTOM_FIELD_DESCRIPTION".equals(string)) {
+                                return "Property used to specify name of Redmine custom field which is used for storing information about related test cases";
+                            }
+                            if ("INTEGRATION_GROUP".equals(string)) {
+                                return "Integration";
+                            }
+                            return string;
+                        }
+                    });
+                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, testCase_cf_property);
+                }
                 stereotype_property.setSelectableTypes(Collections.singleton(Stereotype.class));
                 stereotype_property.setGroup("INTEGRATION_GROUP");
                 stereotype_property.setResourceProvider(new PropertyResourceProvider() {

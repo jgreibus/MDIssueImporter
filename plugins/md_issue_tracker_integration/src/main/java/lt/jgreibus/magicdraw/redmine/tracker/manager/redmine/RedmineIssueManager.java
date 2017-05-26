@@ -53,7 +53,7 @@ public class RedmineIssueManager {
         return queryID;
     }
 
-    public static void GetRedmineIssues(Element owner) {
+    public static void getRedmineIssues(Element owner) {
 
         if (!getURI().isEmpty() && !getApiAccessKey().isEmpty()) {
             com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
@@ -88,7 +88,7 @@ public class RedmineIssueManager {
                     "Tracker URL or/and user access API is missing. Please specify missing properties in Environment Options",
                     NotificationSeverity.ERROR));
     }
-    public static void AddIssueDescription(String issueID, String description) {
+    public static void addIssueDescription(String issueID, String description) {
         com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
         Issue issue = null;
         try {
