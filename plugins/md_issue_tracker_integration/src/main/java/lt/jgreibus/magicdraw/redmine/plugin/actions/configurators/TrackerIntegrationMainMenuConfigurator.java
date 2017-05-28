@@ -6,14 +6,14 @@ import com.nomagic.actions.ActionsManager;
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
 
-public class MainMenuConfigurator implements AMConfigurator
+public class TrackerIntegrationMainMenuConfigurator implements AMConfigurator
     {
         String PARENT_MENU ="TOOLS";
         String MENU = "Tracker Integration";
 
         private NMAction action;
 
-        public MainMenuConfigurator(NMAction action)
+        public TrackerIntegrationMainMenuConfigurator(NMAction action)
         {
             this.action = action;
         }
