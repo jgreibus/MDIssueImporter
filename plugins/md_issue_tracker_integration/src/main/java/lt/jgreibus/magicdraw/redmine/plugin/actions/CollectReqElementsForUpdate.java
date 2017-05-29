@@ -90,7 +90,7 @@ public class CollectReqElementsForUpdate extends MDAction{
                         "Requirements were not selected",
                         "Requirement element were not selected and issue update is stopped.", NotificationSeverity.WARNING));
             }
-            System.out.println(HTMLbuilder.constructHTML(selectedElements));
+            //System.out.println(HTMLbuilder.constructHTML(selectedElements));
         }
     }
 
