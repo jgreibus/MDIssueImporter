@@ -12,10 +12,7 @@ import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdbasicbehaviors.Behavior;
 import lt.jgreibus.magicdraw.redmine.utils.StereotypeUtils;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static lt.jgreibus.magicdraw.redmine.element.manager.ElementSelectionManager.createStereotypedElementsSelectionDialog;
 
@@ -47,9 +44,6 @@ public class AddTestCasesToIssues extends MDAction{
                         }
                     }
                 }
-                for(String s : IDs){
-                    System.out.println("Value: "+s);
-                }
             }
         }
     }
@@ -59,14 +53,12 @@ public class AddTestCasesToIssues extends MDAction{
         String profileSysML = "SysML Profile";
         String profileMed = "Softneta Medical Profile";
 
-        HashMap<Behavior, List<String>> tcMap = new HashMap<>();
-        HashMap<String, List<Behavior>> map = new HashMap<>();
-        List<Behavior> selectedTestCases = new ArrayList<>();
-        List<String> reqIDs = new ArrayList<>();
+        HashMap<Behavior, List<String>> map = new HashMap<>();
 
         for(BaseElement bel : cadidates){
             Behavior el = (Behavior) bel;
             Collection<DirectedRelationship> targets = el.get_directedRelationshipOfSource();
+            List<String> reqIDs = new ArrayList<>();
             for (DirectedRelationship relationship : targets)
             {
                 if(StereotypesHelper.hasStereotype(relationship, StereotypeUtils.getStereotypeObj(profileSysML, "Verify"))){
@@ -79,12 +71,22 @@ public class AddTestCasesToIssues extends MDAction{
                     }
                 }
             }
-            tcMap.put(el, reqIDs);
+            map.put(el, reqIDs);
         }
-        return tcMap;
+        return map;
     }
 
-
-
-
+    public static <K, V> Map<V, ? extends Collection<K>> reverse(Map<K, ? extends Collection<V>> map) {
+        final Map<V, Collection<K>> reversedMap = new HashMap<>();
+        map.forEach((key, values) -> {
+            values.forEach(value -> {
+                if (!reversedMap.containsKey(value))
+                    reversedMap.put(value, new ArrayList<>());
+                final Collection<K> collection = reversedMap.get(value);
+                if (!collection.contains(key))
+                    reversedMap.get(value).add(key);
+            });
+        });
+       return reversedMap;
+    }
 }
