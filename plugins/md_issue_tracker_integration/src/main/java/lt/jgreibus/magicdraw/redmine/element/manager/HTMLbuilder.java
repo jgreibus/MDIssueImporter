@@ -26,4 +26,19 @@ public class HTMLbuilder {
         sb.append("</html>");
         return sb.toString();
     }
+
+    public static String constructTestCaseReport (Collection selectedElements){
+
+        Collection<BaseElement> list = new ArrayList<>(selectedElements);
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table border=1 cellpadding=1 cellspacing=1");
+        for(BaseElement e : list){
+            sb.append("<tr>");
+            sb.append("<td>"+e.getHumanName()+"</td>");
+            sb.append("</tr>");
+        }
+        sb.append("</table>");
+        return sb.toString();
+    }
+
 }

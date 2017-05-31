@@ -9,6 +9,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.DirectedRelationship;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdbasicbehaviors.Behavior;
+import lt.jgreibus.magicdraw.redmine.tracker.manager.redmine.RedmineIssueManager;
 import lt.jgreibus.magicdraw.redmine.utils.StereotypeUtils;
 
 import java.awt.event.ActionEvent;
@@ -16,9 +17,6 @@ import java.util.*;
 
 import static lt.jgreibus.magicdraw.redmine.element.manager.ElementSelectionManager.createStereotypedElementsSelectionDialog;
 
-/**
- * Created by Justinas on 2017-05-26.
- */
 public class AddTestCasesToIssues extends MDAction{
     public AddTestCasesToIssues(String id, String name) {
         super(id, name, null, null);
@@ -33,22 +31,13 @@ public class AddTestCasesToIssues extends MDAction{
         if (elementSelectionDlg.isOkClicked()) {
             List<BaseElement> selectedElements = elementSelectionDlg.getSelectedElements();
             if(selectedElements.size()>0) {
-                HashMap<Behavior, List<String>> map = createTestCaseAndIssueIDMap(selectedElements);
-                List<String> IDs = new ArrayList<>();
-                if(!map.isEmpty()) {
-                    Collection<List<String>> ListOfIDs = map.values();
-
-                    for(List list : ListOfIDs){
-                        for(Object s : list){
-                            IDs.add(s.toString());
-                        }
-                    }
-                }
+                Map<String, ? extends Collection<Behavior>> map = createTestCaseAndIssueIDMap(selectedElements);
+                if(!map.isEmpty()) RedmineIssueManager.updateIssueTestReport((HashMap) map);
             }
         }
     }
 
-    private static HashMap<Behavior, List<String>> createTestCaseAndIssueIDMap(List<BaseElement> cadidates) {
+    private static Map<String, ? extends Collection<Behavior>> createTestCaseAndIssueIDMap(List<BaseElement> cadidates) {
 
         String profileSysML = "SysML Profile";
         String profileMed = "Softneta Medical Profile";
@@ -73,7 +62,7 @@ public class AddTestCasesToIssues extends MDAction{
             }
             map.put(el, reqIDs);
         }
-        return map;
+        return reverse(map);
     }
 
     public static <K, V> Map<V, ? extends Collection<K>> reverse(Map<K, ? extends Collection<V>> map) {

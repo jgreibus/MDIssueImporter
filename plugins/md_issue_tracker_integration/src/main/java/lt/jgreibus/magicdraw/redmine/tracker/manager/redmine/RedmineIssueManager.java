@@ -5,16 +5,22 @@ import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
+import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.taskadapter.redmineapi.RedmineException;
+import com.taskadapter.redmineapi.RedmineManager;
 import com.taskadapter.redmineapi.RedmineManagerFactory;
+import com.taskadapter.redmineapi.bean.CustomField;
 import com.taskadapter.redmineapi.bean.Issue;
+import lt.jgreibus.magicdraw.redmine.element.manager.HTMLbuilder;
 import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCreator;
 import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCreator.StereotypeNotDefinedException;
 import lt.jgreibus.magicdraw.redmine.exception.NotifiedException;
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.nomagic.magicdraw.core.options.ProjectOptions.PROJECT_GENERAL_PROPERTIES;
@@ -36,6 +42,11 @@ public class RedmineIssueManager {
     @Nullable
     private static final String getProjectID() {
         final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "PROJECT_ID");
+        return (String) property.getValue();
+    }
+
+    private static final String getTestCaseCustomField(){
+        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "TC_CUSTOM_FIELD");
         return (String) property.getValue();
     }
 
@@ -133,5 +144,26 @@ public class RedmineIssueManager {
         private ConfigurationPropertyMissingExcpetion(String id, String title, String message) {
             super(id, title, message);
         }
+    }
+
+    public static void updateIssueTestReport (HashMap issueAndTestCaseMap){
+        HashMap<String, Collection<BaseElement>> map = new HashMap<>(issueAndTestCaseMap);
+        RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
+        for(String key : map.keySet()){
+            Issue issue = null;
+            try {
+                issue = mgr.getIssueManager().getIssueById(Integer.valueOf(key));
+            } catch (RedmineException e) {
+                e.printStackTrace();
+            }
+            CustomField cf = issue.getCustomFieldByName(getTestCaseCustomField());
+            cf.setValue(HTMLbuilder.constructTestCaseReport(map.get(key)));
+            try {
+                mgr.getIssueManager().update(issue);
+            } catch (RedmineException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
