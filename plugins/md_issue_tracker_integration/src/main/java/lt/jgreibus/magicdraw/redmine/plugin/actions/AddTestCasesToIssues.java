@@ -18,29 +18,15 @@ import java.util.*;
 import static lt.jgreibus.magicdraw.redmine.element.manager.ElementSelectionManager.createStereotypedElementsSelectionDialog;
 
 public class AddTestCasesToIssues extends MDAction{
+
+    private final static String profileSysML = "SysML Profile";
+    private final static String profileMed = "Softneta Medical Profile";
+
     public AddTestCasesToIssues(String id, String name) {
         super(id, name, null, null);
     }
 
-    public void actionPerformed(ActionEvent e){
-        List<java.lang.Class> types = ClassTypes.getSubtypes(Class.class);
-
-        ElementSelectionDlg elementSelectionDlg = createStereotypedElementsSelectionDialog(types, StereotypeUtils.getStereotypeObj("Softneta Medical Profile", "TC"));
-        elementSelectionDlg.setVisible(true);
-
-        if (elementSelectionDlg.isOkClicked()) {
-            List<BaseElement> selectedElements = elementSelectionDlg.getSelectedElements();
-            if(selectedElements.size()>0) {
-                Map<String, ? extends Collection<Behavior>> map = createTestCaseAndIssueIDMap(selectedElements);
-                if(!map.isEmpty()) RedmineIssueManager.updateIssueTestReport((HashMap) map);
-            }
-        }
-    }
-
     private static Map<String, ? extends Collection<Behavior>> createTestCaseAndIssueIDMap(List<BaseElement> cadidates) {
-
-        String profileSysML = "SysML Profile";
-        String profileMed = "Softneta Medical Profile";
 
         HashMap<Behavior, List<String>> map = new HashMap<>();
 
@@ -77,5 +63,36 @@ public class AddTestCasesToIssues extends MDAction{
             });
         });
        return reversedMap;
+    }
+
+    public static HashMap getTestCaseResults(Behavior testCase) {
+
+        Behavior tc = testCase;
+        Collection<DirectedRelationship> r = tc.get_directedRelationshipOfSource();
+        HashMap map = new HashMap();
+
+        r.forEach(directedRelationship -> {
+            if (StereotypesHelper.hasStereotypeOrDerived(directedRelationship, StereotypeUtils.getStereotypeObj(profileMed, "Pass"))) {
+                map.put(directedRelationship, directedRelationship.getTarget().iterator().next().getHumanName());
+            } else if (StereotypesHelper.hasStereotypeOrDerived(directedRelationship, StereotypeUtils.getStereotypeObj(profileMed, "Fail"))) {
+                map.put(directedRelationship, directedRelationship.getTarget().iterator().next().getHumanName());
+            }
+        });
+        return map;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        List<java.lang.Class> types = ClassTypes.getSubtypes(Class.class);
+
+        ElementSelectionDlg elementSelectionDlg = createStereotypedElementsSelectionDialog(types, StereotypeUtils.getStereotypeObj("Softneta Medical Profile", "TC"));
+        elementSelectionDlg.setVisible(true);
+
+        if (elementSelectionDlg.isOkClicked()) {
+            List<BaseElement> selectedElements = elementSelectionDlg.getSelectedElements();
+            if (selectedElements.size() > 0) {
+                Map<String, ? extends Collection<Behavior>> map = createTestCaseAndIssueIDMap(selectedElements);
+                if (!map.isEmpty()) RedmineIssueManager.updateIssueTestReport((HashMap) map);
+            }
+        }
     }
 }
