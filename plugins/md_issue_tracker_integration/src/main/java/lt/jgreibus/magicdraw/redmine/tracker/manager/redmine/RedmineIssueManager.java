@@ -87,8 +87,8 @@ public class RedmineIssueManager {
 
             NotificationManager.getInstance().showNotification(new Notification("STATISTIC",
                     "Redmine import statistic:",
-                    "New elements were created: " + elementCreator.getCreatedElementCount()
-                            + " , updated: " + elementCreator.getUpdatedElementCount()));
+                    "New elements were created: " + StereotypedClassElementCreator.getCreatedElementCount()
+                            + " , updated: " + StereotypedClassElementCreator.getUpdatedElementCount()));
         } catch (StereotypeNotDefinedException e) {
             NotificationManager.getInstance().showNotification(new Notification(
                     e.getId(), e.getTitle(), e.getMessage(), NotificationSeverity.ERROR));
@@ -140,30 +140,56 @@ public class RedmineIssueManager {
         return false;
     }
 
+    public static void updateIssueTestReport (HashMap issueAndTestCaseMap){
+        HashMap<String, Collection<BaseElement>> map = new HashMap<>(issueAndTestCaseMap);
+        String uri = getURI();
+        String api = getApiAccessKey();
+        if (uri != null && uri != "" && api != null && api != "") {
+            RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, api);
+            for (String key : map.keySet()) {
+                Issue issue = null;
+                try {
+                    issue = mgr.getIssueManager().getIssueById(Integer.valueOf(key));
+                } catch (RedmineException e) {
+                    NotificationManager.getInstance().showNotification(new Notification("NOT_FOUND_ISSUE", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
+                    return;
+                }
+                CustomField cf = issue.getCustomFieldByName(getTestCaseCustomField());
+                cf.setValue(HTMLbuilder.constructTestCaseReport(map.get(key)));
+                try {
+                    mgr.getIssueManager().update(issue);
+                } catch (RedmineException e) {
+                    NotificationManager.getInstance().showNotification(new Notification("ISSUE_NULL", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
+                    return;
+                }
+                NotificationManager.getInstance().showNotification(new Notification("ISSUE_UPDATE",
+                        "Issue(s) updated successfully",
+                        composeUpdateReport(map),
+                        NotificationSeverity.INFO));
+            }
+        } else NotificationManager.getInstance().showNotification(new Notification("PROPERTIES_NULL",
+                "Redmine configuration properties are missing",
+                "Redmine URI or user API Key is missing in the Environment  options",
+                NotificationSeverity.ERROR));
+    }
+
+    private static String composeUpdateReport(HashMap issueMap) {
+
+        HashMap map = issueMap;
+        int mapSize = map.keySet().size();
+        StringBuilder sb = new StringBuilder();
+        if (mapSize > 1) sb.append(mapSize + " issues have been updated by adding test case information");
+        else sb.append(mapSize + " issue has been updated by adding test case information. \n");
+        sb.append("Updated issues: ");
+        map.keySet().forEach(o -> {
+            sb.append(o.toString());
+        });
+        return sb.toString();
+    }
+
     public static final class ConfigurationPropertyMissingExcpetion extends NotifiedException {
         private ConfigurationPropertyMissingExcpetion(String id, String title, String message) {
             super(id, title, message);
         }
-    }
-
-    public static void updateIssueTestReport (HashMap issueAndTestCaseMap){
-        HashMap<String, Collection<BaseElement>> map = new HashMap<>(issueAndTestCaseMap);
-        RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
-        for(String key : map.keySet()){
-            Issue issue = null;
-            try {
-                issue = mgr.getIssueManager().getIssueById(Integer.valueOf(key));
-            } catch (RedmineException e) {
-                e.printStackTrace();
-            }
-            CustomField cf = issue.getCustomFieldByName(getTestCaseCustomField());
-            cf.setValue(HTMLbuilder.constructTestCaseReport(map.get(key)));
-            try {
-                mgr.getIssueManager().update(issue);
-            } catch (RedmineException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 }
