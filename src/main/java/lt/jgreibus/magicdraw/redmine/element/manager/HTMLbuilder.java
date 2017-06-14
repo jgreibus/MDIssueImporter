@@ -1,6 +1,6 @@
 package lt.jgreibus.magicdraw.redmine.element.manager;
 
-import com.nomagic.magicdraw.uml.BaseElement;
+import com.nomagic.magicdraw.uml.*;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdbasicbehaviors.Behavior;

@@ -17,11 +17,11 @@ public class ImportProblemsInBrowser extends DefaultBrowserAction {
 
     public ImportProblemsInBrowser() {
         super("", "Import Problems from Redmine", null, null);
-        try {
-            setSmallIcon(new ScalableImageIcon(ImageIO.read(ClassLoader.getSystemResource("icons/redmine.png"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            setSmallIcon(new ScalableImageIcon(ImageIO.read(ClassLoader.getSystemResource("icons/redmine.png"))));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

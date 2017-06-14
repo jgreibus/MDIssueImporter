@@ -30,7 +30,7 @@ public class IntegrationEnvironmentOptions extends AbstractPropertyOptionsGroup
             return IntegrationEnvOptResources.getString(key);
         }
     };
-    private static final Icon ICON = IconsFactory.getIcon("icons/icon.png");
+    //private static final Icon ICON = IconsFactory.getIcon("icons/icon.png");
     private static final String OPTION_GROUP_NAME = "OPTION_GROUP_NAME";
     private static String TRACKER_1 = "Redmine";
     private static String TRACKER_2 = "JIRA (Not Available)";
@@ -98,9 +98,9 @@ public class IntegrationEnvironmentOptions extends AbstractPropertyOptionsGroup
         return IntegrationEnvOptResources.getString(OPTION_GROUP_NAME);
     }
 
-    @Override
-    public javax.swing.Icon getGroupIcon()
-    {
-        return ICON;
-    }
+//    @Override
+//    public javax.swing.Icon getGroupIcon()
+//    {
+//        return ICON;
+//    }
 }
