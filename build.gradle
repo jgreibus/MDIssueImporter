@@ -1,5 +1,19 @@
 apply plugin: 'idea'
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "com.nomagic.osgi.launcher.FrameworkLauncher"
+applicationDefaultJvmArgs = ["-Xmx2000M\n" +
+                                     "-Xss1024K\n" +
+                                     "-XX:PermSize=60M\n" +
+                                     "-XX:MaxPermSize=200M\n" +
+                                     "-DLOCALCONFIG=true\n" +
+                                     "-Dmd.class.path=$java.class.path\n" +
+                                     "-Dcom.nomagic.osgi.config.dir=${MAGIC_DRAW_INSTALL_DIRECTORY}/configuration\n" +
+                                     "-Desi.system.config=${MAGIC_DRAW_INSTALL_DIRECTORY}/data/application.conf\n" +
+                                     "-Dlogback.configurationFile=${MAGIC_DRAW_INSTALL_DIRECTORY}/data/logback.xml\n" +
+                                     "-Dinstall.root=${MAGIC_DRAW_INSTALL_DIRECTORY}\n" +
+                                     "-Dmd.plugins.dir=${MAGIC_DRAW_INSTALL_DIRECTORY}/plugins;.."]
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
