@@ -1,14 +1,12 @@
 package lt.jgreibus.magicdraw.redmine.plugin.options;
 
 import com.nomagic.magicdraw.core.options.AbstractPropertyOptionsGroup;
-import com.nomagic.magicdraw.icons.IconsFactory;
 import com.nomagic.magicdraw.properties.ChoiceProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.PropertyResourceProvider;
 import com.nomagic.magicdraw.properties.StringProperty;
 import lt.jgreibus.magicdraw.redmine.resources.IntegrationEnvOptResources;
 
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
 

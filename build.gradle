@@ -1,29 +1,15 @@
 apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin: 'application'
-
-mainClassName = "com.nomagic.osgi.launcher.FrameworkLauncher"
-applicationDefaultJvmArgs = ["-Xmx2000M\n" +
-                                     "-Xss1024K\n" +
-                                     "-XX:PermSize=60M\n" +
-                                     "-XX:MaxPermSize=200M\n" +
-                                     "-DLOCALCONFIG=true\n" +
-                                     "-Dmd.class.path=$java.class.path\n" +
-                                     "-Dcom.nomagic.osgi.config.dir=${MAGIC_DRAW_INSTALL_DIRECTORY}/configuration\n" +
-                                     "-Desi.system.config=${MAGIC_DRAW_INSTALL_DIRECTORY}/data/application.conf\n" +
-                                     "-Dlogback.configurationFile=${MAGIC_DRAW_INSTALL_DIRECTORY}/data/logback.xml\n" +
-                                     "-Dinstall.root=${MAGIC_DRAW_INSTALL_DIRECTORY}\n" +
-                                     "-Dmd.plugins.dir=${MAGIC_DRAW_INSTALL_DIRECTORY}/plugins;.."]
+apply plugin: 'distribution'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-     mavenCentral()
+    mavenCentral()
 }
 
 configurations {
-    // configuration that holds jars to include in the jar
     extraLibs
 }
 dependencies {
@@ -31,9 +17,10 @@ dependencies {
     configurations.compile.extendsFrom(configurations.extraLibs)
     compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version:'2.1-m01'
     compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version:'2.24'
-    compile fileTree(dir: 'C:\\Program Files\\MagicDraw 18.4\\lib', include: ['*.jar'])
-    compile fileTree(dir: 'C:\\Program Files\\MagicDraw 18.4\\lib', include: ['**/*.jar'])
-    compile fileTree(dir: 'C:\\Program Files\\MagicDraw 18.4\\lib', include: ['**/**/*.jar'])
+
+    compile fileTree(dir: 'C:\\Program Files\\MagicDraw18.4\\lib', include: ['*.jar'])
+    compile fileTree(dir: 'C:\\Program Files\\MagicDraw18.4\\lib', include: ['**/*.jar'])
+    compile fileTree(dir: 'C:\\Program Files\\MagicDraw18.4\\lib', include: ['**/**/*.jar'])
 }
 jar {
     from {
