@@ -20,6 +20,7 @@ public class IntegrationEnvironmentOptions extends AbstractPropertyOptionsGroup
     public static final String INTEGRATION_ID = "INTEGRATION_ID";
     public static final String USER_API_KEY_ID = "USER_API_KEY_ID";
     public static final String TRACKER_URL_ID = "TRACKER_URL_ID";
+    public static final String COLLABORATOR_URL_ID = "COLLABORATOR_URL_ID";
     public static final PropertyResourceProvider PROPERTY_RESOURCE_PROVIDER = new PropertyResourceProvider()
     {
         @Override
@@ -46,6 +47,7 @@ public class IntegrationEnvironmentOptions extends AbstractPropertyOptionsGroup
         setTrackerSelectionProperty(TRACKER_1);
         setUserApiKey("");
         setTrackerURL("");
+        setCollaboratorURL("");
     }
 
     public void setTrackerSelectionProperty(String value)
@@ -87,6 +89,19 @@ public class IntegrationEnvironmentOptions extends AbstractPropertyOptionsGroup
 
     public String getTrackerUrlId() {
         Property property = getProperty(TRACKER_URL_ID);
+        return (String) property.getValue();
+    }
+
+    public void setCollaboratorURL(String value) {
+        StringProperty collaborator_URL_property = new StringProperty(COLLABORATOR_URL_ID, value);
+        collaborator_URL_property.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
+        collaborator_URL_property.setGroup(INTEGRATION_OPTIONS_GROUP);
+
+        addProperty(collaborator_URL_property);
+    }
+
+    public String getCollaboratorUrlId() {
+        Property property = getProperty(COLLABORATOR_URL_ID);
         return (String) property.getValue();
     }
 

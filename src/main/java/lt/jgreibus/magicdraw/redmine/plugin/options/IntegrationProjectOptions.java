@@ -21,6 +21,7 @@ public class IntegrationProjectOptions {
                 Property report_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "REPORT_URL");
                 Property requirement_cf_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "REQ_CUSTOM_FIELD");
                 Property testCase_cf_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "TC_CUSTOM_FIELD");
+                Property report_tree_ID = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "REPORT_TREE_ID");
                 ElementProperty stereotype_property = new ElementProperty("STEREOTYPE_ID", null);
 
                 if (project_property == null) {
@@ -123,6 +124,27 @@ public class IntegrationProjectOptions {
                         }
                     });
                     projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, testCase_cf_property);
+                }
+                if (report_tree_ID == null) {
+                    report_tree_ID = new StringProperty("REPORT_TREE_ID", null);
+                    report_tree_ID.setGroup("INTEGRATION_GROUP");
+                    report_tree_ID.setResourceProvider(new PropertyResourceProvider() {
+                        @Override
+                        public String getString(String string, Property property) {
+
+                            if ("REPORT_TREE_ID".equals(string)) {
+                                return "Report Tree Node";
+                            }
+                            if ("REPORT_TREE_ID_DESCRIPTION".equals(string)) {
+                                return "ID of the diagram viewpoint from the template project";
+                            }
+                            if ("INTEGRATION_GROUP".equals(string)) {
+                                return "Integration";
+                            }
+                            return string;
+                        }
+                    });
+                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, report_tree_ID);
                 }
                 stereotype_property.setSelectableTypes(Collections.singleton(Stereotype.class));
                 stereotype_property.setGroup("INTEGRATION_GROUP");
