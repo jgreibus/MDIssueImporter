@@ -17,12 +17,12 @@ import java.util.*;
 
 import static lt.jgreibus.magicdraw.redmine.element.manager.ElementSelectionManager.createStereotypedElementsSelectionDialog;
 
-public class AddTestCasesToIssues extends MDAction{
+public class AddTestCasesToIssuesAction extends MDAction {
 
     private final static String profileSysML = "SysML Profile";
     private final static String profileMed = "Softneta Medical Profile";
 
-    public AddTestCasesToIssues(String id, String name) {
+    public AddTestCasesToIssuesAction(String id, String name) {
         super(id, name, null, null);
     }
 

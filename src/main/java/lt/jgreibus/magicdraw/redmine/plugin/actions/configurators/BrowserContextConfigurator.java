@@ -7,10 +7,10 @@ import com.nomagic.magicdraw.actions.MDActionsCategory;
 import com.nomagic.magicdraw.ui.browser.Tree;
 import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
 
-public class BrowserContextMenuConfigurator implements BrowserContextAMConfigurator, AMConfigurator {
+public class BrowserContextConfigurator implements BrowserContextAMConfigurator, AMConfigurator {
     private final DefaultBrowserAction browserAction;
 
-    public BrowserContextMenuConfigurator(DefaultBrowserAction action) {
+    public BrowserContextConfigurator(DefaultBrowserAction action) {
         this.browserAction = action;
     }
 

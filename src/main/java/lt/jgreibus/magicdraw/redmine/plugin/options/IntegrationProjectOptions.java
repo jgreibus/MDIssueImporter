@@ -18,12 +18,30 @@ public class IntegrationProjectOptions {
 
                 Property project_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "PROJECT_ID");
                 Property query_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "QUERY_ID");
-                Property report_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "REPORT_URL");
                 Property requirement_cf_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "REQ_CUSTOM_FIELD");
                 Property testCase_cf_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "TC_CUSTOM_FIELD");
-                Property report_tree_ID = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "REPORT_TREE_ID");
+                Property template_node_ID = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "TEMPLATE_NODE_ID");
                 ElementProperty stereotype_property = new ElementProperty("STEREOTYPE_ID", null);
 
+                if (template_node_ID == null) {
+                    template_node_ID = new StringProperty("TEMPLATE_NODE_ID", null);
+                    template_node_ID.setGroup("INTEGRATION_GROUP");
+                    template_node_ID.setResourceProvider(new PropertyResourceProvider() {
+                        public String getString(String string, Property property) {
+                            if ("TEMPLATE_NODE_ID".equals(string)) {
+                                return "Template Node ID";
+                            }
+                            if ("TEMPLATE_NODE_ID_DESCRIPTION".equals(string)) {
+                                return "Property used to specify diagram viewpoint element ID from the used Collaborator template";
+                            }
+                            if ("INTEGRATION_GROUP".equals(string)) {
+                                return "Integration";
+                            }
+                            return string;
+                        }
+                    });
+                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, template_node_ID);
+                }
                 if (project_property == null) {
                     project_property = new StringProperty("PROJECT_ID", null);
                     project_property.setGroup("INTEGRATION_GROUP");
@@ -63,26 +81,6 @@ public class IntegrationProjectOptions {
                     });
                     projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, query_property);
                 }
-                if (report_property == null) {
-                    report_property = new StringProperty("REPORT_URL", null);
-                    report_property.setGroup("INTEGRATION_GROUP");
-                    report_property.setResourceProvider(new PropertyResourceProvider() {
-                        public String getString(String string, Property property) {
-
-                            if ("REPORT_URL".equals(string)) {
-                                return "Report URL";
-                            }
-                            if ("REPORT_URL_DESCRIPTION".equals(string)) {
-                                return "Property used to specify Requirement Web Report URL address";
-                            }
-                            if ("INTEGRATION_GROUP".equals(string)) {
-                                return "Integration";
-                            }
-                            return string;
-                        }
-                    });
-                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, report_property);
-                }
                 if (requirement_cf_property == null){
                     requirement_cf_property = new StringProperty("REQ_CUSTOM_FIELD", null);
                     requirement_cf_property.setGroup("INTEGRATION_GROUP");
@@ -91,7 +89,7 @@ public class IntegrationProjectOptions {
                         public String getString(String string, Property property) {
 
                             if ("REQ_CUSTOM_FIELD".equals(string)) {
-                                return "Requirement Custom Field";
+                                return "Requirement Link Custom Field";
                             }
                             if ("REQ_CUSTOM_FIELD_DESCRIPTION".equals(string)) {
                                 return "Property used to specify name of Redmine custom field which is used for storing link to requirement specification";
@@ -124,27 +122,6 @@ public class IntegrationProjectOptions {
                         }
                     });
                     projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, testCase_cf_property);
-                }
-                if (report_tree_ID == null) {
-                    report_tree_ID = new StringProperty("REPORT_TREE_ID", null);
-                    report_tree_ID.setGroup("INTEGRATION_GROUP");
-                    report_tree_ID.setResourceProvider(new PropertyResourceProvider() {
-                        @Override
-                        public String getString(String string, Property property) {
-
-                            if ("REPORT_TREE_ID".equals(string)) {
-                                return "Report Tree Node";
-                            }
-                            if ("REPORT_TREE_ID_DESCRIPTION".equals(string)) {
-                                return "ID of the diagram viewpoint from the template project";
-                            }
-                            if ("INTEGRATION_GROUP".equals(string)) {
-                                return "Integration";
-                            }
-                            return string;
-                        }
-                    });
-                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, report_tree_ID);
                 }
                 stereotype_property.setSelectableTypes(Collections.singleton(Stereotype.class));
                 stereotype_property.setGroup("INTEGRATION_GROUP");

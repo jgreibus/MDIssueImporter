@@ -50,6 +50,11 @@ public class RedmineIssueManager {
         return (String) property.getValue();
     }
 
+    private static final String getRequirementCustomField() {
+        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "REQ_CUSTOM_FIELD");
+        return (String) property.getValue();
+    }
+
     @Nullable
     private static final Integer getQueryID() {
 
@@ -185,6 +190,42 @@ public class RedmineIssueManager {
             sb.append(o.toString());
         });
         return sb.toString();
+    }
+
+    public static void addLinkToSpec(String url, String issueID) {
+        String uri = getURI();
+        String api = getApiAccessKey();
+        if (uri != null && uri != "" && api != null && api != "") {
+            RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, api);
+            Issue issue = null;
+            try {
+                issue = mgr.getIssueManager().getIssueById(Integer.valueOf(issueID));
+            } catch (RedmineException e) {
+                NotificationManager.getInstance().showNotification(new Notification("NOT_FOUND_ISSUE", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
+                return;
+            }
+            CustomField cf = issue.getCustomFieldByName(getRequirementCustomField());
+            if (cf != null) cf.setValue(url);
+            else {
+                NotificationManager.getInstance().showNotification(new Notification("CF_NULL",
+                        "Custom field is missing",
+                        "",
+                        NotificationSeverity.ERROR));
+            }
+            try {
+                mgr.getIssueManager().update(issue);
+            } catch (RedmineException e) {
+                NotificationManager.getInstance().showNotification(new Notification("ISSUE_NULL", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
+                return;
+            }
+            NotificationManager.getInstance().showNotification(new Notification("ISSUE_UPDATE",
+                    "Issue(s) updated successfully",
+                    "Updated issue: " + issueID,
+                    NotificationSeverity.INFO));
+        } else NotificationManager.getInstance().showNotification(new Notification("PROPERTIES_NULL",
+                "Redmine configuration properties are missing",
+                "Redmine URI or user API Key is missing in the Environment  options",
+                NotificationSeverity.ERROR));
     }
 
     public static final class ConfigurationPropertyMissingExcpetion extends NotifiedException {

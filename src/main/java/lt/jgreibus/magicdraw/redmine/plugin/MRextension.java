@@ -7,16 +7,18 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
-import lt.jgreibus.magicdraw.redmine.plugin.actions.AddTestCasesToIssues;
+import com.nomagic.magicdraw.uml.DiagramTypeConstants;
+import lt.jgreibus.magicdraw.redmine.plugin.actions.AddTestCasesToIssuesAction;
 import lt.jgreibus.magicdraw.redmine.plugin.actions.CollectReqElementsForUpdate;
 import lt.jgreibus.magicdraw.redmine.plugin.actions.ImportProblems;
 import lt.jgreibus.magicdraw.redmine.plugin.actions.ImportProblemsInBrowser;
-import lt.jgreibus.magicdraw.redmine.plugin.actions.configurators.BrowserContextMenuConfigurator;
+import lt.jgreibus.magicdraw.redmine.plugin.actions.configurators.BrowserContextConfigurator;
+import lt.jgreibus.magicdraw.redmine.plugin.actions.configurators.DiagramContextConfigurator;
 import lt.jgreibus.magicdraw.redmine.plugin.actions.configurators.TrackerIntegrationMainMenuConfigurator;
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationProjectOptions;
 
-public class Main extends Plugin {
+public class MRextension extends Plugin {
 
 	private EnvironmentOptions.EnvironmentChangeListener mEnvironmentOptionsListener;
 
@@ -27,9 +29,13 @@ public class Main extends Plugin {
 		ActionsConfiguratorsManager manager = ActionsConfiguratorsManager.getInstance();
 		manager.addMainMenuConfigurator(new TrackerIntegrationMainMenuConfigurator(getMenuActions()));
 		IntegrationProjectOptions.addProjectOptionsConfigurator();
+
 		final DefaultBrowserAction browserAction = new ImportProblemsInBrowser();
-		BrowserContextMenuConfigurator configurator = new BrowserContextMenuConfigurator(browserAction);
+		BrowserContextConfigurator configurator = new BrowserContextConfigurator(browserAction);
 		manager.addContainmentBrowserContextConfigurator(configurator);
+
+		DiagramContextConfigurator diagramConfigurator = new DiagramContextConfigurator();
+		manager.addBaseDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM, diagramConfigurator);
 	}
 
 	@Override
@@ -46,7 +52,7 @@ public class Main extends Plugin {
         ActionsCategory category = new ActionsCategory(null, "");
         category.addAction(new ImportProblems(null, "Import Problems from Redmine"));
 		category.addAction(new CollectReqElementsForUpdate(null, "Update Redmine Issue"));
-		category.addAction(new AddTestCasesToIssues(null,"Export Test Case Info"));
+		category.addAction(new AddTestCasesToIssuesAction(null, "Export Test Case Info"));
 		return category;
 	}
 

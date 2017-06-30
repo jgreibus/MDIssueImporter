@@ -1,10 +1,10 @@
 package lt.jgreibus.magicdraw.redmine.element.manager;
 
-import com.nomagic.magicdraw.uml.*;
+import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdbasicbehaviors.Behavior;
-import lt.jgreibus.magicdraw.redmine.plugin.actions.AddTestCasesToIssues;
+import lt.jgreibus.magicdraw.redmine.plugin.actions.AddTestCasesToIssuesAction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +37,7 @@ public class HTMLbuilder {
 
         sb.append("<table border=1 cellpadding=1 cellspacing=1");
         for(BaseElement e : list){
-            HashMap map = AddTestCasesToIssues.getTestCaseResults((Behavior) e);
+            HashMap map = AddTestCasesToIssuesAction.getTestCaseResults((Behavior) e);
             System.out.println(map);
             map.keySet().forEach(key -> {
                 sb.append("<tr>");
