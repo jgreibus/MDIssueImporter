@@ -205,23 +205,25 @@ public class RedmineIssueManager {
                 return;
             }
             CustomField cf = issue.getCustomFieldByName(getRequirementCustomField());
-            if (cf != null) cf.setValue(url);
+            if (cf != null) {
+                cf.setValue(url);
+                try {
+                    mgr.getIssueManager().update(issue);
+                } catch (RedmineException e) {
+                    NotificationManager.getInstance().showNotification(new Notification("ISSUE_NULL", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
+                    return;
+                }
+                NotificationManager.getInstance().showNotification(new Notification("ISSUE_UPDATE",
+                        "Issue(s) updated successfully",
+                        "Updated issue: " + issueID,
+                        NotificationSeverity.INFO));
+            }
             else {
                 NotificationManager.getInstance().showNotification(new Notification("CF_NULL",
-                        "Custom field is missing",
+                        "Custom field for Requirement Specification is missing or specified incorrectly",
                         "",
                         NotificationSeverity.ERROR));
             }
-            try {
-                mgr.getIssueManager().update(issue);
-            } catch (RedmineException e) {
-                NotificationManager.getInstance().showNotification(new Notification("ISSUE_NULL", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
-                return;
-            }
-            NotificationManager.getInstance().showNotification(new Notification("ISSUE_UPDATE",
-                    "Issue(s) updated successfully",
-                    "Updated issue: " + issueID,
-                    NotificationSeverity.INFO));
         } else NotificationManager.getInstance().showNotification(new Notification("PROPERTIES_NULL",
                 "Redmine configuration properties are missing",
                 "Redmine URI or user API Key is missing in the Environment  options",
