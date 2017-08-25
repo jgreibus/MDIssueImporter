@@ -11,6 +11,7 @@ import lt.jgreibus.magicdraw.redmine.tracker.manager.redmine.RedmineIssueManager
 
 import javax.annotation.Nullable;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.List;
 
 import static com.nomagic.magicdraw.core.options.ProjectOptions.PROJECT_GENERAL_PROPERTIES;
@@ -53,10 +54,13 @@ public class CreateLinkToSpecificationAction extends DefaultDiagramAction {
         List<PresentationElement> selected = diagram.getSelected();
         for (PresentationElement pe : selected) {
             if (StereotypesHelper.hasStereotype(pe.getElement(), "Related Issue")) {
-                String id = (StereotypesHelper.getStereotypePropertyValueAsString(pe.getElement(),
+                final Collection<String> values = StereotypesHelper.getStereotypePropertyValueAsString(pe.getElement(),
                         "Related Issue",
                         "issueID",
-                        true).iterator().next());
+                        true);
+                if (values.isEmpty()) continue;
+
+                String id = values.iterator().next();
                 specURL = sb.toString();
                 RedmineIssueManager.addLinkToSpec(specURL, id);
             }
