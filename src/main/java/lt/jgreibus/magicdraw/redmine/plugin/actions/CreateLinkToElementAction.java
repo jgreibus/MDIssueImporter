@@ -17,13 +17,13 @@ import java.util.List;
 import static com.nomagic.magicdraw.core.options.ProjectOptions.PROJECT_GENERAL_PROPERTIES;
 
 
-public class CreateLinkToSpecificationAction extends DefaultDiagramAction {
+public class CreateLinkToElementAction extends DefaultDiagramAction {
 
-    public static final String DEFAULT_ID = "linkToSpec";
-    public static final String actionText = "Create Link to Spec";
+    public static final String DEFAULT_ID = "linkToElement";
+    public static final String actionText = "Create Link to Element";
     private final static Project PROJECT = Application.getInstance().getProject();
 
-    public CreateLinkToSpecificationAction() {
+    public CreateLinkToElementAction() {
         super(DEFAULT_ID, actionText, null, null);
     }
 
@@ -32,8 +32,8 @@ public class CreateLinkToSpecificationAction extends DefaultDiagramAction {
     }
 
     @Nullable
-    private static final String getTemplateNodeID() {
-        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "TEMPLATE_NODE_ID");
+    private static final String getElementTemplateNodeID() {
+        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "ELEMENT_TEMPLATE_NODE_ID");
         return (String) property.getValue();
     }
 
@@ -45,14 +45,15 @@ public class CreateLinkToSpecificationAction extends DefaultDiagramAction {
         DiagramPresentationElement diagram = PROJECT.getActiveDiagram();
 
         sb.append(getCollaboratorURL());
-        sb.append(getTemplateNodeID());
+        sb.append(getElementTemplateNodeID());
         sb.append("NodeView__");
-        sb.append(diagram.getDiagram().getID());
-        sb.append("_cc_");
-        sb.append(getTemplateNodeID());
 
         List<PresentationElement> selected = diagram.getSelected();
         for (PresentationElement pe : selected) {
+            sb.append(pe.getElement().getID());
+            sb.append("_cc_");
+            sb.append(getElementTemplateNodeID());
+
             if (StereotypesHelper.hasStereotype(pe.getElement(), "Related Issue")) {
                 final Collection<String> values = StereotypesHelper.getStereotypePropertyValueAsString(pe.getElement(),
                         "Related Issue",

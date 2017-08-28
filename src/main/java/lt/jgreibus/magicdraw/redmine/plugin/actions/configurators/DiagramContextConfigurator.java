@@ -7,7 +7,8 @@ import com.nomagic.magicdraw.actions.DiagramContextAMConfigurator;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
-import lt.jgreibus.magicdraw.redmine.plugin.actions.CreateLinkToSpecificationAction;
+import lt.jgreibus.magicdraw.redmine.plugin.actions.CreateLinkToDiagramAction;
+import lt.jgreibus.magicdraw.redmine.plugin.actions.CreateLinkToElementAction;
 import org.apache.commons.lang.ArrayUtils;
 
 public class DiagramContextConfigurator implements DiagramContextAMConfigurator {
@@ -24,7 +25,8 @@ public class DiagramContextConfigurator implements DiagramContextAMConfigurator 
         }
         manager.removeCategory(category);
         manager.addCategory(category);
-        category.addAction(new CreateLinkToSpecificationAction());
+        category.addAction(new CreateLinkToDiagramAction());
+        category.addAction(new CreateLinkToElementAction());
     }
 
     @Override

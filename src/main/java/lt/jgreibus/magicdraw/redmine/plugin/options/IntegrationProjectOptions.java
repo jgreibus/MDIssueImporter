@@ -20,19 +20,20 @@ public class IntegrationProjectOptions {
                 Property query_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "QUERY_ID");
                 Property requirement_cf_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "REQ_CUSTOM_FIELD");
                 Property testCase_cf_property = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "TC_CUSTOM_FIELD");
-                Property template_node_ID = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "TEMPLATE_NODE_ID");
+                Property diagram_template_node_ID = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "DIAGRAM_TEMPLATE_NODE_ID");
+                Property element_template_node_ID = projectOptions.getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, "ELEMENT_TEMPLATE_NODE_ID");
                 ElementProperty stereotype_property = new ElementProperty("STEREOTYPE_ID", null);
 
-                if (template_node_ID == null) {
-                    template_node_ID = new StringProperty("TEMPLATE_NODE_ID", null);
-                    template_node_ID.setGroup("INTEGRATION_GROUP");
-                    template_node_ID.setResourceProvider(new PropertyResourceProvider() {
+                if (diagram_template_node_ID == null) {
+                    diagram_template_node_ID = new StringProperty("DIAGRAM_TEMPLATE_NODE_ID", null);
+                    diagram_template_node_ID.setGroup("INTEGRATION_GROUP");
+                    diagram_template_node_ID.setResourceProvider(new PropertyResourceProvider() {
                         public String getString(String string, Property property) {
-                            if ("TEMPLATE_NODE_ID".equals(string)) {
-                                return "Template Node ID";
+                            if ("DIAGRAM_TEMPLATE_NODE_ID".equals(string)) {
+                                return "Diagram Template Node ID";
                             }
-                            if ("TEMPLATE_NODE_ID_DESCRIPTION".equals(string)) {
-                                return "Property used to specify diagram viewpoint element ID from the used Collaborator template";
+                            if ("DIAGRAM_TEMPLATE_NODE_ID_DESCRIPTION".equals(string)) {
+                                return "Property is used to specify diagram viewpoint element ID from the used Collaborator template (should start with TREE_VIEW keyword)";
                             }
                             if ("INTEGRATION_GROUP".equals(string)) {
                                 return "Integration";
@@ -40,7 +41,26 @@ public class IntegrationProjectOptions {
                             return string;
                         }
                     });
-                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, template_node_ID);
+                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, diagram_template_node_ID);
+                }
+                if (element_template_node_ID == null) {
+                    element_template_node_ID = new StringProperty("ELEMENT_TEMPLATE_NODE_ID", null);
+                    element_template_node_ID.setGroup("INTEGRATION_GROUP");
+                    element_template_node_ID.setResourceProvider(new PropertyResourceProvider() {
+                        public String getString(String string, Property property) {
+                            if ("ELEMENT_TEMPLATE_NODE_ID".equals(string)) {
+                                return "Element Template Node ID";
+                            }
+                            if ("ELEMENT_TEMPLATE_NODE_ID_DESCRIPTION".equals(string)) {
+                                return "Property is used to specify element viewpoint element ID from the used Collaborator template (should start with TREE_VIEW keyword)";
+                            }
+                            if ("INTEGRATION_GROUP".equals(string)) {
+                                return "Integration";
+                            }
+                            return string;
+                        }
+                    });
+                    projectOptions.addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, element_template_node_ID);
                 }
                 if (project_property == null) {
                     project_property = new StringProperty("PROJECT_ID", null);
