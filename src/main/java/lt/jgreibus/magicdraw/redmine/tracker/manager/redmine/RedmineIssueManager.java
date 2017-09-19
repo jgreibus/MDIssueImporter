@@ -2,6 +2,7 @@ package lt.jgreibus.magicdraw.redmine.tracker.manager.redmine;
 
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
+import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
@@ -18,7 +19,6 @@ import lt.jgreibus.magicdraw.redmine.element.manager.StereotypedClassElementCrea
 import lt.jgreibus.magicdraw.redmine.exception.NotifiedException;
 import lt.jgreibus.magicdraw.redmine.plugin.options.IntegrationEnvironmentOptions;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -27,41 +27,28 @@ import static com.nomagic.magicdraw.core.options.ProjectOptions.PROJECT_GENERAL_
 
 public class RedmineIssueManager {
 
-    private final static Project PROJECT = Application.getInstance().getProject();
+    private static Project project;
+    private static String uri;
+    private static String apiAccessKey;
+    private static String projectID;
+    private static String testCaseCustomField;
+    private static String requirementCustomField;
+    private static Integer queryID;
 
-    @Nullable
-    private static final String getURI() {
-        return ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getTrackerUrlId();
+    public RedmineIssueManager(Application application) {
+        project = application.getProject();
+        uri = ((IntegrationEnvironmentOptions) application.getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getTrackerUrlId();
+        apiAccessKey = ((IntegrationEnvironmentOptions) application.getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getUserAPIKeyValue();
+        setupProjectOptions(project.getOptions());
+        queryID = getQueryID();
     }
 
-    @Nullable
-    private static final String getApiAccessKey() {
-        return ((IntegrationEnvironmentOptions) Application.getInstance().getEnvironmentOptions().getGroup(IntegrationEnvironmentOptions.ID)).getUserAPIKeyValue();
-    }
-
-    @Nullable
-    private static final String getProjectID() {
-        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "PROJECT_ID");
-        return (String) property.getValue();
-    }
-
-    private static final String getTestCaseCustomField(){
-        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "TC_CUSTOM_FIELD");
-        return (String) property.getValue();
-    }
-
-    private static final String getRequirementCustomField() {
-        final com.nomagic.magicdraw.properties.Property property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "REQ_CUSTOM_FIELD");
-        return (String) property.getValue();
-    }
-
-    @Nullable
     private static final Integer getQueryID() {
 
         com.nomagic.magicdraw.properties.Property property;
         Integer queryID = 0;
         try {
-            property = PROJECT.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "PROJECT_ID");
+            property = project.getOptions().getProperty(PROJECT_GENERAL_PROPERTIES, "PROJECT_ID");
             queryID = Integer.parseInt((String) property.getValue());
         } catch (NumberFormatException e) {
             throw new NotifiedException(e);
@@ -71,41 +58,42 @@ public class RedmineIssueManager {
 
     public static void getRedmineIssues(Element owner) {
 
-        if (!getURI().isEmpty() && !getApiAccessKey().isEmpty()) {
-            com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
+        if ((uri != null || uri != "") && (apiAccessKey != null || apiAccessKey != "")) {
+            com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, apiAccessKey);
 
-        List<Issue> issues = null;
-        try {
-            if (!getProjectID().isEmpty() || getQueryID() != 0)
-                issues = mgr.getIssueManager().getIssues(getProjectID(), getQueryID());
-        } catch (RedmineException e) {
-            e.printStackTrace();
-        }
-        StereotypedClassElementCreator elementCreator = new StereotypedClassElementCreator();
-        try {
-            for (Issue issue : issues) {
-                System.out.println(issue.toString());
-                final String issueID = issue.getId().toString();
-                final String subject = issue.getSubject().toString();
-                elementCreator.create(owner, subject, issueID);
+            List<Issue> issues = null;
+            try {
+                if ((projectID != null || projectID != "") || getQueryID() != 0)
+                    issues = mgr.getIssueManager().getIssues(projectID, getQueryID());
+            } catch (RedmineException e) {
+                e.printStackTrace();
             }
+            StereotypedClassElementCreator elementCreator = new StereotypedClassElementCreator();
+            try {
+                for (Issue issue : issues) {
+                    System.out.println(issue.toString());
+                    final String issueID = issue.getId().toString();
+                    final String subject = issue.getSubject().toString();
+                    elementCreator.create(owner, subject, issueID);
+                }
 
-            NotificationManager.getInstance().showNotification(new Notification("STATISTIC",
-                    "Redmine import statistic:",
-                    "New elements were created: " + StereotypedClassElementCreator.getCreatedElementCount()
-                            + " , updated: " + StereotypedClassElementCreator.getUpdatedElementCount()));
-        } catch (StereotypeNotDefinedException e) {
-            NotificationManager.getInstance().showNotification(new Notification(
-                    e.getId(), e.getTitle(), e.getMessage(), NotificationSeverity.ERROR));
-        }
-    } else
+                NotificationManager.getInstance().showNotification(new Notification("STATISTIC",
+                        "Redmine import statistic:",
+                        "New elements were created: " + StereotypedClassElementCreator.getCreatedElementCount()
+                                + " , updated: " + StereotypedClassElementCreator.getUpdatedElementCount()));
+            } catch (StereotypeNotDefinedException e) {
+                NotificationManager.getInstance().showNotification(new Notification(
+                        e.getId(), e.getTitle(), e.getMessage(), NotificationSeverity.ERROR));
+            }
+        } else
             NotificationManager.getInstance().showNotification(new Notification("NOT_DEFINED",
                     "Configuration properties are missing",
                     "Tracker URL or/and user access API is missing. Please specify missing properties in Environment Options",
                     NotificationSeverity.ERROR));
     }
+
     public static void addIssueDescription(String issueID, String description) {
-        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
+        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, apiAccessKey);
         Issue issue = null;
         try {
             issue = mgr.getIssueManager().getIssueById(Integer.parseInt(issueID));
@@ -132,8 +120,8 @@ public class RedmineIssueManager {
         }
     }
 
-    private static boolean containsRequirements(String issueID){
-        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(getURI(), getApiAccessKey());
+    private static boolean containsRequirements(String issueID) {
+        com.taskadapter.redmineapi.RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, apiAccessKey);
         Issue issue = null;
         try {
             issue = mgr.getIssueManager().getIssueById(Integer.parseInt(issueID));
@@ -145,10 +133,10 @@ public class RedmineIssueManager {
         return false;
     }
 
-    public static void updateIssueTestReport (HashMap issueAndTestCaseMap){
+    public static void updateIssueTestReport(HashMap issueAndTestCaseMap) {
         HashMap<String, Collection<BaseElement>> map = new HashMap<>(issueAndTestCaseMap);
-        String uri = getURI();
-        String api = getApiAccessKey();
+        String uri = RedmineIssueManager.uri;
+        String api = apiAccessKey;
         if (uri != null && uri != "" && api != null && api != "") {
             RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, api);
             for (String key : map.keySet()) {
@@ -159,7 +147,7 @@ public class RedmineIssueManager {
                     NotificationManager.getInstance().showNotification(new Notification("NOT_FOUND_ISSUE", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
                     return;
                 }
-                CustomField cf = issue.getCustomFieldByName(getTestCaseCustomField());
+                CustomField cf = issue.getCustomFieldByName(testCaseCustomField);
                 cf.setValue(HTMLbuilder.constructTestCaseReport(map.get(key)));
                 try {
                     mgr.getIssueManager().update(issue);
@@ -174,7 +162,44 @@ public class RedmineIssueManager {
             }
         } else NotificationManager.getInstance().showNotification(new Notification("PROPERTIES_NULL",
                 "Redmine configuration properties are missing",
-                "Redmine URI or user API Key is missing in the Environment  options",
+                "Redmine uri or user API Key is missing in the Environment  options",
+                NotificationSeverity.ERROR));
+    }
+
+    public static void addLinkToSpec(String url, String issueID) {
+        String uri = RedmineIssueManager.uri;
+        String api = apiAccessKey;
+        if (uri != null && uri != "" && api != null && api != "") {
+            RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, api);
+            Issue issue = null;
+            try {
+                issue = mgr.getIssueManager().getIssueById(Integer.valueOf(issueID));
+            } catch (RedmineException e) {
+                NotificationManager.getInstance().showNotification(new Notification("NOT_FOUND_ISSUE", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
+                return;
+            }
+            CustomField cf = issue.getCustomFieldByName(requirementCustomField);
+            if (cf != null) {
+                cf.setValue(url);
+                try {
+                    mgr.getIssueManager().update(issue);
+                } catch (RedmineException e) {
+                    NotificationManager.getInstance().showNotification(new Notification("ISSUE_NULL", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
+                    return;
+                }
+                NotificationManager.getInstance().showNotification(new Notification("ISSUE_UPDATE",
+                        "Issue(s) updated successfully",
+                        "Updated issue: " + issueID,
+                        NotificationSeverity.INFO));
+            } else {
+                NotificationManager.getInstance().showNotification(new Notification("CF_NULL",
+                        "Custom field for Requirement Specification is missing or specified incorrectly",
+                        "",
+                        NotificationSeverity.ERROR));
+            }
+        } else NotificationManager.getInstance().showNotification(new Notification("PROPERTIES_NULL",
+                "Redmine configuration properties are missing",
+                "Redmine uri or user API Key is missing in the Environment  options",
                 NotificationSeverity.ERROR));
     }
 
@@ -192,42 +217,10 @@ public class RedmineIssueManager {
         return sb.toString();
     }
 
-    public static void addLinkToSpec(String url, String issueID) {
-        String uri = getURI();
-        String api = getApiAccessKey();
-        if (uri != null && uri != "" && api != null && api != "") {
-            RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, api);
-            Issue issue = null;
-            try {
-                issue = mgr.getIssueManager().getIssueById(Integer.valueOf(issueID));
-            } catch (RedmineException e) {
-                NotificationManager.getInstance().showNotification(new Notification("NOT_FOUND_ISSUE", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
-                return;
-            }
-            CustomField cf = issue.getCustomFieldByName(getRequirementCustomField());
-            if (cf != null) {
-                cf.setValue(url);
-                try {
-                    mgr.getIssueManager().update(issue);
-                } catch (RedmineException e) {
-                    NotificationManager.getInstance().showNotification(new Notification("ISSUE_NULL", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
-                    return;
-                }
-                NotificationManager.getInstance().showNotification(new Notification("ISSUE_UPDATE",
-                        "Issue(s) updated successfully",
-                        "Updated issue: " + issueID,
-                        NotificationSeverity.INFO));
-            }
-            else {
-                NotificationManager.getInstance().showNotification(new Notification("CF_NULL",
-                        "Custom field for Requirement Specification is missing or specified incorrectly",
-                        "",
-                        NotificationSeverity.ERROR));
-            }
-        } else NotificationManager.getInstance().showNotification(new Notification("PROPERTIES_NULL",
-                "Redmine configuration properties are missing",
-                "Redmine URI or user API Key is missing in the Environment  options",
-                NotificationSeverity.ERROR));
+    private void setupProjectOptions(ProjectOptions options) {
+        projectID = (String) options.getProperty(PROJECT_GENERAL_PROPERTIES, "PROJECT_ID").getValue();
+        testCaseCustomField = (String) options.getProperty(PROJECT_GENERAL_PROPERTIES, "TC_CUSTOM_FIELD").getValue();
+        requirementCustomField = (String) options.getProperty(PROJECT_GENERAL_PROPERTIES, "REQ_CUSTOM_FIELD").getValue();
     }
 
     public static final class ConfigurationPropertyMissingExcpetion extends NotifiedException {
