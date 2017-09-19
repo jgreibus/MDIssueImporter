@@ -43,6 +43,12 @@ public class RedmineIssueManager {
         queryID = getQueryID();
     }
 
+    private void setupProjectOptions(ProjectOptions options) {
+        projectID = (String) options.getProperty(PROJECT_GENERAL_PROPERTIES, "PROJECT_ID").getValue();
+        testCaseCustomField = (String) options.getProperty(PROJECT_GENERAL_PROPERTIES, "TC_CUSTOM_FIELD").getValue();
+        requirementCustomField = (String) options.getProperty(PROJECT_GENERAL_PROPERTIES, "REQ_CUSTOM_FIELD").getValue();
+    }
+
     private static final Integer getQueryID() {
 
         com.nomagic.magicdraw.properties.Property property;
@@ -166,18 +172,40 @@ public class RedmineIssueManager {
                 NotificationSeverity.ERROR));
     }
 
+    public static Issue getIssue(Integer id) {
+        Issue issue = null;
+        if (getRedmineManager(uri, apiAccessKey) != null) {
+            try {
+                return getRedmineManager(uri, apiAccessKey).getIssueManager().getIssueById(Integer.valueOf(id));
+            } catch (RedmineException e) {
+                e.printStackTrace();
+            }
+        }
+        //TODO Return notification about missing issue
+        return null;
+    }
+
+    private static RedmineManager getRedmineManager(String uri, String api){
+        if (uri != null && uri != "" && api != null && api != "") {
+            return RedmineManagerFactory.createWithApiKey(uri, api);
+        }
+        //TODO Add notification about missing parameters
+        return null;
+    }
+
+    public static CustomField getCustomFieldByName(Integer id, String fieldName){
+        if(getIssue(id) != null){
+            getIssue(id).getCustomFieldByName(fieldName);
+        }
+        //TODO add notification about missing custom field
+        return null;
+    }
+
     public static void addLinkToSpec(String url, String issueID) {
         String uri = RedmineIssueManager.uri;
         String api = apiAccessKey;
-        if (uri != null && uri != "" && api != null && api != "") {
-            RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, api);
-            Issue issue = null;
-            try {
-                issue = mgr.getIssueManager().getIssueById(Integer.valueOf(issueID));
-            } catch (RedmineException e) {
-                NotificationManager.getInstance().showNotification(new Notification("NOT_FOUND_ISSUE", "Issue has not be found by specified ID", e.getMessage(), NotificationSeverity.ERROR));
-                return;
-            }
+
+
             CustomField cf = issue.getCustomFieldByName(requirementCustomField);
             if (cf != null) {
                 cf.setValue(url);
@@ -215,12 +243,6 @@ public class RedmineIssueManager {
             sb.append(o.toString());
         });
         return sb.toString();
-    }
-
-    private void setupProjectOptions(ProjectOptions options) {
-        projectID = (String) options.getProperty(PROJECT_GENERAL_PROPERTIES, "PROJECT_ID").getValue();
-        testCaseCustomField = (String) options.getProperty(PROJECT_GENERAL_PROPERTIES, "TC_CUSTOM_FIELD").getValue();
-        requirementCustomField = (String) options.getProperty(PROJECT_GENERAL_PROPERTIES, "REQ_CUSTOM_FIELD").getValue();
     }
 
     public static final class ConfigurationPropertyMissingExcpetion extends NotifiedException {
